@@ -46,7 +46,6 @@ namespace Breakout {
             foreach (string i in legend) {
                 blocksDictionary.Add(i.Substring(0, 1), i.Substring(3));
             }
-
         }
 
         // Creates a block and add it to the block list

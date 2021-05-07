@@ -8,19 +8,35 @@ using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Entities;
 using NUnit.Framework;
+using Breakout;
+using DIKUArcade.Math;
 
 namespace BreakoutTests {
-    [TestFixture]
     public class PlayerTests {
+        public Player player;
+        
         [SetUp]
         public void SetUp() {
             player = new Player(
-                new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "Player.png")));
+                new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.17f, 0.0225f)), null);
         }
 
         [Test]
-        public void SpawnsWithinBounderies() {
-            Assert.True(Player , 1);
+        public void MovesWithinBounderiesLeft() {
+            for (int i = 0; i < 100; i++) {
+                player.SetMoveLeft(true);
+                player.Move();
+            }
+            Assert.AreEqual(0.01f, player.shape.Position.X);
         }
+        [Test]
+        public void MovesWithinBounderiesRight() {
+            for (int i = 0; i < 100; i++) {
+                player.SetMoveRight(true);
+                player.Move();
+            }
+            Assert.AreEqual(0.82f, player.shape.Position.X);
+        }
+        
     }
 }

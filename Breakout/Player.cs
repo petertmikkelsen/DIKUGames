@@ -23,7 +23,7 @@ namespace Breakout {
             entity.RenderEntity();
         }
         public void Move() {
-            if (shape.Position.X > 0.82f){
+            if (shape.Position.X >= 0.82f){
                 SetMoveRight(false);
                 shape.Position.X = 0.82f;
                 shape.Move();
