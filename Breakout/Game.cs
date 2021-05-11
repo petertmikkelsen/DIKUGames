@@ -8,25 +8,18 @@ using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
-// using Breakout.Levels;
 using DIKUArcade.Input;
-
-// hej hej hej
 
 namespace Breakout {
     public class Game : DIKUGame {
         public Player player;
         private LevelLoader levelLoader;
-        // private GameEventBus eventBus;
         public Game(WindowArgs windowArgs) : base (windowArgs) {
             window.SetKeyEventHandler(HandleKeyEvent);
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "Player.png")));
             levelLoader = new LevelLoader();
             levelLoader.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
-            
-            // eventBus = new GameEventBus();
-            // eventBus.InitializeEventBus(new List<GameEventType> { GameEventType.InputEvent });
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {

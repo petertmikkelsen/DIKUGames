@@ -10,6 +10,7 @@ using DIKUArcade.Entities;
 using NUnit.Framework;
 using Breakout;
 using DIKUArcade.Math;
+using DIKUArcade.Utilities;
 
 namespace BreakoutTests {
     public class PlayerTests {
@@ -20,15 +21,19 @@ namespace BreakoutTests {
         bool retValMeta = true;
         bool retValLegend = true;
 
+
         [SetUp]
         public void SetUp() {
+            DIKUArcade.GUI.Window.CreateOpenGLContext();
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.17f, 0.0225f)), null);
             levelLoader = new LevelLoader();
-            levelLoader.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
+            levelLoader.LoadNewlevel(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
+
         }
 
         [Test]
+        // Tjekker at spilleren ikke kan bevæge sig ud over den venstre kant
         public void MovesWithinBounderiesLeft() {
             for (int i = 0; i < 100; i++) {
                 player.SetMoveLeft(true);
@@ -36,7 +41,9 @@ namespace BreakoutTests {
             }
             Assert.AreEqual(0.01f, player.shape.Position.X);
         }
+
         [Test]
+        // Tjekker at spilleren ikke kan bevæge sig ud over den højre kant
         public void MovesWithinBounderiesRight() {
             for (int i = 0; i < 100; i++) {
                 player.SetMoveRight(true);
@@ -44,40 +51,41 @@ namespace BreakoutTests {
             }
             Assert.AreEqual(0.82f, player.shape.Position.X);
         }
+
         [Test]
-        // siden at vi sætter spiller billedet ind fra nederste venstre hjørne af figuren, skal vi sætte player.shape.Position.X til
-        // at være det halve af dens brede
+        // Tjekker at spilleren stater i midten i den nederste den af vinduet 
         public void SpawnsInMiddle() {
             Assert.AreEqual(0.41f, player.shape.Position.X);
             Assert.AreEqual(0.1f, player.shape.Position.Y);
         }
+
         [Test]
+        // Map er altid 25 linjer langt
         public void MapTest() {
             Assert.AreEqual(25 , levelLoader.map.Length);
         }
+
         [Test]
-        // I denne test tjekker vi om string arrayet indeholder et ":" da meta delen af .txt filen er den eneste der indeholder sådan et tegn på hver linje.
+        // I denne test tjekker vi om string arrayet indeholder et ":" da meta-delen
+        // af .txt filen er den eneste der indeholder sådan et tegn på hver linje.
         public void MetaTest() {
             foreach (string line in levelLoader.meta) {
                 if (!line.Contains(":")) {
                     retValMeta = false;
                 }
-                Assert.Equals(true, retValMeta);
+                Assert.AreEqual(true, retValMeta);
             }
-            
         }
+
         [Test]
+        // Legend er den eneste del af tekstfilen som indeholder ")" på hver linje.
         public void LegendTest() {
             foreach (string line in levelLoader.legend) {
                 if (!line.Contains(")")) {
                     retValLegend = false;
                 }
-                Assert.Equals(true, retValLegend);
+                Assert.AreEqual(true, retValLegend);
             }
-        }
-        [Test]
-        public void BlockTest() {
-
         }
     }
 }
