@@ -61,7 +61,6 @@ namespace Breakout {
             for (int i = 0; i < map.Length; i ++) {
                 for (int j = 0; j < map[i].Length; j++) {
                     if (map[i][j] != '-') {
-                        // Console.Write(".");
                         string c = Char.ToString(map[i][j]);
                         CreateBlock(new Vec2F(0.02f + j * 0.08f, 0.95f - 
                             i * 0.03f), blocksDictionary[c]);
@@ -75,20 +74,7 @@ namespace Breakout {
             file = File.ReadAllLines(filename);
             CreateAllSubFiles();
             legendToDictionary();
-            Console.WriteLine(blocksDictionary["#"]);
             LevelBuilder();
-
         }
-                
-        
-        // Starts with, ends with, index of - Google
-        // Dictionary - Google
-        // public LevelLoader(string[] LevelName) {
-        //     foreach (string lines in level1) {
-        //         for (int i = 1; i < 26; i++) {
-        //             map.Add(i);
-        //         }
-        //     }
-        // }
     }
 }
