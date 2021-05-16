@@ -23,7 +23,7 @@ namespace Breakout {
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "Player.png")));
             ball = new Ball(
-                new DynamicShape(new Vec2F(0.41f, 0.2f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "ball.png")));
+                new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f)), new Image(Path.Combine("Assets", "Images", "ball.png")));
             levelLoader = new LevelLoader();
             levelLoader.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
         }
@@ -58,25 +58,25 @@ namespace Breakout {
             }
         }
 
-        private void MovingBall() {
-
-            if ( ball.Shape.Position.X > 1.0f || ball.Shape.Position.X < 0.0f
-              || ball.Shape.Position.Y > 1.0f || ball.Shape.Position.Y < 0.0f) {
-                    ball.DeleteEntity();
-                }
-            
-            Blocks.Iterate(){
-
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.entity)) {
-                    
-                }
-
-                
-            }
-            if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.Shape).Collision) {
-
-            }
-        }
+        //private void MovingBall() {
+//
+        //    if ( ball.Shape.Position.X > 1.0f || ball.Shape.Position.X < 0.0f
+        //      || ball.Shape.Position.Y > 1.0f || ball.Shape.Position.Y < 0.0f) {
+        //            ball.DeleteEntity();
+        //        }
+        //    
+        //    Blocks.Iterate(){
+//
+        //        if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.entity)) {
+        //            
+        //        }
+//
+        //        
+        //    }
+        //    if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.Shape).Collision) {
+//
+        //    }
+        //}
         
         
         public override void Render()
