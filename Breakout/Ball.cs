@@ -10,6 +10,7 @@ namespace Breakout
     {
         private Entity entity;
         private DynamicShape shape;
+        // private const float MOVEMENT_SPEED = 0.02f;
 
         public Ball(DynamicShape shape, IBaseImage image) : base(shape, image) {
             entity = new Entity(shape, image);
@@ -19,6 +20,7 @@ namespace Breakout
             entity.RenderEntity();
         }
         public void Move() {
+            shape.Move();
 
         }
     }
