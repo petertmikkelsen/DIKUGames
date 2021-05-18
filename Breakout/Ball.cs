@@ -2,6 +2,7 @@ using System;
 using DIKUArcade;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
 
@@ -17,9 +18,7 @@ namespace Breakout
             entity = new Entity(shape, image);
             this.shape = shape;
         }
-        public void Render() {
-            entity.RenderEntity();
-        }
+        
         public void Move() {
             if (shape.Position.X >= 0.97f){
                 // SetMoveRight(false);
@@ -44,6 +43,13 @@ namespace Breakout
 
             shape.Move();
 
+        }
+        
+        public Vec2F GetPosition() {
+            return shape.Position;
+        }
+        public void Render() {
+            entity.RenderEntity();
         }
     }
 }
