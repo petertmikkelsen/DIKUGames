@@ -1,3 +1,4 @@
+using System;
 using DIKUArcade;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
@@ -20,6 +21,28 @@ namespace Breakout
             entity.RenderEntity();
         }
         public void Move() {
+            if (shape.Position.X >= 0.97f){
+                // SetMoveRight(false);
+                shape.Direction.X = (shape.Direction.X * (-1));
+                shape.Move();
+            }
+            else if (shape.Position.X <= 0.0f){
+                // SetMoveLeft(false);
+                shape.Direction.X = (shape.Direction.X * (-1));
+                shape.Move();
+            }
+            else if (shape.Position.Y >= 0.97f) {
+                shape.Direction.Y = (shape.Direction.Y * (-1));
+                shape.Move();
+            }
+            else if (shape.Position.Y >= 0.0f) {
+                shape.Direction.Y = (shape.Direction.Y * (-1));
+                entity.DeleteEntity();
+                Console.WriteLine("GAME OVER");
+            }
+            else
+                shape.Move();
+
             shape.Move();
 
         }
