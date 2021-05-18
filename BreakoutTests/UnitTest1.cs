@@ -28,7 +28,7 @@ namespace BreakoutTests {
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.17f, 0.0225f)), null);
             levelLoader = new LevelLoader();
-            levelLoader.LoadNewlevel(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
+            levelLoader.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
 
         }
 

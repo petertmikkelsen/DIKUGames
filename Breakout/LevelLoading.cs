@@ -12,11 +12,13 @@ using DIKUArcade.Utilities;
 
 namespace Breakout {
     public class LevelLoader {
-        public string[] file { private set; get; }
+        private string[] file;
         public string[] map { private set; get; }
         public string[] meta { private set; get; }
         public string[] legend { private set; get; }
-        Dictionary<string, string> blocksDictionary =
+        Dictionary<string, string> metaDictionary =
+            new Dictionary<string, string>();
+        Dictionary<string, string> legendDictionary =
             new Dictionary<string, string>();
         public EntityContainer<Block> blocks = new EntityContainer<Block>();
         
@@ -41,40 +43,30 @@ namespace Breakout {
             legend = CreateSubFile("Legend");
         }
 
-        // Creates dictionary based on legend file
-        public void legendToDictionary() {
-            foreach (string i in legend) {
-                blocksDictionary.Add(i.Substring(0, 1), i.Substring(3));
-            }
-        }
-
-        // Creates a block and add it to the block list
-        public void CreateBlock (Vec2F position, string image) {
-            blocks.AddEntity(new Block(
-                new StationaryShape(position, new Vec2F(0.08f, 0.03f)),
-                new Image(Path.Combine("Assets", "Images",  image))));
-        }
- 
-
-        // Calls CreateBlock for each block in map, with correct(?) position
-        public void LevelBuilder () {
-            for (int i = 0; i < map.Length; i ++) {
-                for (int j = 0; j < map[i].Length; j++) {
-                    if (map[i][j] != '-') {
-                        string c = Char.ToString(map[i][j]);
-                        CreateBlock(new Vec2F(0.02f + j * 0.08f, 0.95f - 
-                            i * 0.03f), blocksDictionary[c]);
-                    }                        
+        // Creates dictionary based on map file
+        public void metaToDictionary() {
+            foreach (string i in meta) {
+                if (i.Contains(":")) {
+                    int middle;
+                    middle = i.IndexOf(":");
+                    metaDictionary.Add(i.Substring(0, middle), (i.Substring(middle+2)));
                 }
             }
         }
 
-        // Calls the above functions in correct order
-        public void LoadNewlevel(string filename) {
-            file = File.ReadAllLines(filename);
+        // Creates dictionary based on legend file
+        public void legendToDictionary() {
+            foreach (string i in legend) {
+                legendDictionary.Add(i.Substring(0, 1), i.Substring(3));
+            }
+        }
+
+        public (string[], Dictionary<string, string>, Dictionary<string, string>) GetSubfiles(string levelAsASCII) {
+            file = File.ReadAllLines(levelAsASCII);
             CreateAllSubFiles();
+            metaToDictionary();
             legendToDictionary();
-            LevelBuilder();
+            return (map, metaDictionary, legendDictionary);
         }
     }
 }
