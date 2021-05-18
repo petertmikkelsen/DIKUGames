@@ -64,7 +64,6 @@ namespace Breakout {
         }
         public override void Update()
         {
-            ball.Shape.Move();
             player.Move();
             ball.Move();
         }
