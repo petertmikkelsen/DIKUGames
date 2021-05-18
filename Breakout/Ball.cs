@@ -35,8 +35,7 @@ namespace Breakout
                 shape.Direction.Y = (shape.Direction.Y * (-1));
                 shape.Move();
             }
-            else if (shape.Position.Y >= 0.0f) {
-                shape.Direction.Y = (shape.Direction.Y * (-1));
+            else if (shape.Position.Y <= 0.0f) {
                 entity.DeleteEntity();
                 Console.WriteLine("GAME OVER");
             }
