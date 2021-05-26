@@ -60,7 +60,7 @@ namespace Breakout {
             levelCreator.blocks.Iterate(Block => {
                 if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).Collision) {
                     // Block.Shape.Position.X
-                    Block.DeleteEntity();
+                    Block.TakeDamage();
                     ball.SetPosition();
                 }
                 if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {

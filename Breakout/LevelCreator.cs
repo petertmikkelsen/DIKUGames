@@ -25,7 +25,7 @@ namespace Breakout
         
         // Creates a block and add it to the block list
         public void CreateBlock (Vec2F position, string image) {
-            blocks.AddEntity(new Block(
+            blocks.AddEntity(new NormalBlock(
                 new StationaryShape(position, new Vec2F(0.08f, 0.03f)),
                 new Image(Path.Combine("Assets", "Images",  image))));
         }
