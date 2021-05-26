@@ -15,16 +15,21 @@ namespace Breakout {
     public class Game : DIKUGame {
         public Ball ball;
         public Player player;
+        public EntityContainer<Block> blocks;
         private LevelCreator levelCreator;
+        private CollisionControler collisionControler;
+
 
         public Game(WindowArgs windowArgs) : base (windowArgs) {
             window.SetKeyEventHandler(HandleKeyEvent);
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.003f, 0.008f)), 
+            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.004f, 0.008f)), 
                 new Image(Path.Combine("Assets", "Images", "ball.png")));
-            levelCreator = new LevelCreator();
+            blocks = new EntityContainer<Block>();
+            levelCreator = new LevelCreator(blocks);
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
+            collisionControler = new CollisionControler (blocks, ball, player);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
@@ -56,19 +61,7 @@ namespace Breakout {
                 }
             }
         }
-        public void CollisionDetector() {
-            levelCreator.blocks.Iterate(Block => {
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).Collision) {
-                    // Block.Shape.Position.X
-                    Block.TakeDamage();
-                    ball.SetPosition();
-                }
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
-                    ball.SetPosition();
-                }
-                
-            });
-        }        
+       
         public override void Render() {
             ball.Render();
             player.Render();
@@ -77,7 +70,7 @@ namespace Breakout {
         public override void Update() {
             player.Move();
             ball.Move();
-            CollisionDetector();
+            collisionControler.CollisionDetector();
         }
     }
 }

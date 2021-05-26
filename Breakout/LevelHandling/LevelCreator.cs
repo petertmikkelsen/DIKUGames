@@ -15,21 +15,33 @@ namespace Breakout
     public class LevelCreator
     {
         LevelLoader levelLoader = new LevelLoader();
-        public EntityContainer<Block> blocks = new EntityContainer<Block>();
+        public EntityContainer<Block> blocks;
         public string[] map { private set; get; }
 
         Dictionary<string, string> metaDictionary =
             new Dictionary<string, string>();
         Dictionary<string, string> legendDictionary =
             new Dictionary<string, string>();
+
+        
+        public LevelCreator(EntityContainer<Block> blocks){
+            this.blocks = blocks;
+
+        }
         
         // Creates a block and add it to the block list
         public void CreateBlock (Vec2F position, string image) {
-            blocks.AddEntity(new NormalBlock(
-                new StationaryShape(position, new Vec2F(0.08f, 0.03f)),
-                new Image(Path.Combine("Assets", "Images",  image))));
-        }
- 
+            if (image == "teal-block.png" ) {
+                blocks.AddEntity(new HardenedBlock(
+                    new StationaryShape(position, new Vec2F(0.08f, 0.03f)),
+                    new Image(Path.Combine("Assets", "Images",  image))));
+            }
+            else {
+                blocks.AddEntity(new NormalBlock(
+                    new StationaryShape(position, new Vec2F(0.08f, 0.03f)),
+                    new Image(Path.Combine("Assets", "Images",  image))));
+            }
+        } 
 
         // Calls CreateBlock for each block in map, with correct(?) position
         public void LevelBuilder () {

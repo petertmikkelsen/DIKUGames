@@ -18,7 +18,10 @@ namespace Breakout
 
         public override void TakeDamage()
         {
-            hitPoints -= 1;    
+            hitPoints -= 1;
+            if (hitPoints == 1) {
+            // make damaged block
+            }
             if (hitPoints <= 0) {
                 this.DeleteEntity();  
             }      

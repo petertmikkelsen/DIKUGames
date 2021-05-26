@@ -13,8 +13,8 @@ namespace Breakout
             
             var windowArgs = new WindowArgs();
             windowArgs.Title = "Breakout";
-            windowArgs.Height = 800U;
-            windowArgs.Width = 800U;
+            windowArgs.Height = 900U;
+            windowArgs.Width = 900U;
 
             
             var game = new Game(windowArgs);
