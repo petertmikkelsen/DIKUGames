@@ -21,7 +21,7 @@ namespace Breakout {
             window.SetKeyEventHandler(HandleKeyEvent);
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(Path.Combine("Assets", "Images", "Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.005f, 0.005f)), 
+            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.003f, 0.008f)), 
                 new Image(Path.Combine("Assets", "Images", "ball.png")));
             levelCreator = new LevelCreator();
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
@@ -59,8 +59,14 @@ namespace Breakout {
         public void CollisionDetector() {
             levelCreator.blocks.Iterate(Block => {
                 if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).Collision) {
+                    // Block.Shape.Position.X
                     Block.DeleteEntity();
-            }
+                    ball.SetPosition();
+                }
+                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
+                    ball.SetPosition();
+                }
+                
             });
         }        
         public override void Render() {

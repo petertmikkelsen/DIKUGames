@@ -36,13 +36,17 @@ namespace Breakout
             }
             else if (shape.Position.Y <= 0.0f) {
                 entity.DeleteEntity();
-                Console.WriteLine("GAME OVER");
+                // Console.WriteLine("GAME OVER");
             }
             else
                 shape.Move();
 
-            shape.Move();
+            // shape.Move();
 
+        }
+
+        public void SetPosition() {
+            shape.Direction.Y = (shape.Direction.Y * (-1));
         }
         
         public Vec2F GetPosition() {
