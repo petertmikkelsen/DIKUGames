@@ -29,7 +29,7 @@ namespace Breakout {
                 new Image(ImageDatabase.GetImageFilePath("ball.png")));
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
-            levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
+            levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
         }
 
