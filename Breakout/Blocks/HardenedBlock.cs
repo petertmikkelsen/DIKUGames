@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Entities;
+using Breakout.Utilities;
 
 namespace Breakout
 {
@@ -20,7 +21,7 @@ namespace Breakout
         {
             hitPoints -= 1;
             if (hitPoints == 1) {
-            // make damaged block
+                Image = new Image(ImageDatabase.GetImageFilePath("Teal-Block-Damaged"));
             }
             if (hitPoints <= 0) {
                 this.DeleteEntity();  
