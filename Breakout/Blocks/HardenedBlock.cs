@@ -9,6 +9,7 @@ using DIKUArcade.GUI;
 using DIKUArcade.Entities;
 using Breakout.Utilities;
 
+
 namespace Breakout
 {
     public class HardenedBlock : Block
@@ -21,7 +22,7 @@ namespace Breakout
         {
             hitPoints -= 1;
             if (hitPoints == 1) {
-                Image = new Image(ImageDatabase.GetImageFilePath("Teal-Block-Damaged.png"));
+                Image = new Image(ImageDatabase.GetImageFilePath("Darkgreen-block-damaged.png"));
             }
             if (hitPoints <= 0) {
                 this.DeleteEntity();  
