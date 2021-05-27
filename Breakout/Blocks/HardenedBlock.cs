@@ -21,7 +21,7 @@ namespace Breakout
         {
             hitPoints -= 1;
             if (hitPoints == 1) {
-                image = new Image(ImageDatabase.GetImageFilePath("Teal-Block-Damaged.png"));
+                Image = new Image(ImageDatabase.GetImageFilePath("Teal-Block-Damaged.png"));
             }
             if (hitPoints <= 0) {
                 this.DeleteEntity();  

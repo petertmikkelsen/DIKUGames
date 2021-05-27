@@ -25,7 +25,7 @@ namespace Breakout {
             window.SetKeyEventHandler(HandleKeyEvent);
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(ImageDatabase.GetImageFilePath("Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.004f, 0.008f)), 
+            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)), 
                 new Image(Path.Combine("Assets", "Images", "ball.png")));
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);

@@ -12,14 +12,10 @@ namespace Breakout
 {
     public abstract class Block : Entity {
         public Entity entity;
-        public StationaryShape shape;
         public int hitPoints;
-        public IBaseImage image;
         
         public Block(StationaryShape shape, IBaseImage image) : base(shape, image) {
             entity = new Entity(shape, image);
-            this.shape = shape;
-            this.image = image;
         }
         public abstract void TakeDamage ();
     }
