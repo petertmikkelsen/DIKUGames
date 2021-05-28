@@ -19,8 +19,8 @@ namespace BreakoutTests
         private LevelLoader levelLoader0;
         private LevelLoader levelLoader1;
         private LevelLoader levelLoader2;
-        //private LevelCreator levelCreator;
-        //public EntityContainer<Block> blocks;
+        private LevelCreator levelCreator;
+        public EntityContainer<Block> blocks;
         bool retValMeta = true;
         bool retValLegend = true;
 
@@ -33,8 +33,6 @@ namespace BreakoutTests
             levelLoader1.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level2.txt"));
             levelLoader2 = new LevelLoader();
             levelLoader2.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level3.txt"));
-            //levelCreator = new LevelCreator(blocks);
-            //levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
         }
 
         [Test]
@@ -117,9 +115,13 @@ namespace BreakoutTests
             }
         }
 
-        //[Test]
-        //public void InvalidFileName() {
-        //    Assert.Throws<FileNotFoundException>();
-        //}
+        [Test]
+        public void InvalidFileName() {
+            Assert.Throws<FileNotFoundException>(WrongInputException);
+        }
+        void WrongInputException() {
+            levelCreator = new LevelCreator(blocks);
+            levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
+        }
     }
 }
