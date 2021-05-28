@@ -116,6 +116,7 @@ namespace BreakoutTests
         }
 
         [Test]
+        // Tester om vi får en exception ved et ugyldigt input.
         public void InvalidFileName() {
             Assert.Throws<FileNotFoundException>(WrongInputException);
         }
