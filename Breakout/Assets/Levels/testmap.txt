@@ -1,0 +1,16 @@
+Map:
+-----
+-#-#-
+-----
+Map/
+
+Meta:
+Name: LEVEL 1
+Time: 300
+PowerUp: 2
+Meta/
+
+Legend:
+#) teal-block.png
+1) blue-block.png
+Legend/
