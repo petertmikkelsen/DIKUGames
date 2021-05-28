@@ -16,30 +16,68 @@ using Breakout.Utilities;
 namespace BreakoutTests
 {
     public class LevelTesting {
-        private LevelLoader levelLoader;
-        private LevelCreator levelCreator;
+        private LevelLoader levelLoader0;
+        private LevelLoader levelLoader1;
+        private LevelLoader levelLoader2;
+        //private LevelCreator levelCreator;
+        //public EntityContainer<Block> blocks;
         bool retValMeta = true;
         bool retValLegend = true;
 
         [SetUp]
         public void SetUp() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            levelLoader = new LevelLoader();
-            levelLoader.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
-
+            levelLoader0 = new LevelLoader();
+            levelLoader0.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
+            levelLoader1 = new LevelLoader();
+            levelLoader1.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level2.txt"));
+            levelLoader2 = new LevelLoader();
+            levelLoader2.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level3.txt"));
+            //levelCreator = new LevelCreator(blocks);
+            //levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
         }
 
         [Test]
         // Map er altid 25 linjer langt
-        public void MapTest() {
-            Assert.AreEqual(25 , levelLoader.map.Length);
+        public void MapTest0() {
+            Assert.AreEqual(25 , levelLoader0.map.Length);
+        }
+
+        [Test]
+        public void MapTest1() {
+            Assert.AreEqual(25 , levelLoader1.map.Length);
+        }
+
+        [Test]
+        public void MapTest2() {
+            Assert.AreEqual(25 , levelLoader2.map.Length);
         }
 
         [Test]
         // I denne test tjekker vi om string arrayet indeholder et ":" da meta-delen
         // af .txt filen er den eneste der indeholder sådan et tegn på hver linje.
-        public void MetaTest() {
-            foreach (string line in levelLoader.meta) {
+        public void MetaTest0() {
+            foreach (string line in levelLoader0.meta) {
+                if (!line.Contains(":")) {
+                    retValMeta = false;
+                }
+                Assert.AreEqual(true, retValMeta);
+            }
+        }
+
+        [Test]
+        public void MetaTest1() {
+            foreach (string line in levelLoader1.meta) {
+                if (!line.Contains(":")) {
+                    retValMeta = false;
+                }
+                Assert.AreEqual(true, retValMeta);
+            }
+        }
+
+        [Test]
+        public void MetaTest2() {
+            foreach (string line in levelLoader2.meta) {
                 if (!line.Contains(":")) {
                     retValMeta = false;
                 }
@@ -49,8 +87,8 @@ namespace BreakoutTests
 
         [Test]
         // Legend er den eneste del af tekstfilen som indeholder ")" på hver linje.
-        public void LegendTest() {
-            foreach (string line in levelLoader.legend) {
+        public void LegendTest0() {
+            foreach (string line in levelLoader0.legend) {
                 if (!line.Contains(")")) {
                     retValLegend = false;
                 }
@@ -59,9 +97,29 @@ namespace BreakoutTests
         }
 
         [Test]
-
-        public void InvalidFileName() {
-            levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
+        // Legend er den eneste del af tekstfilen som indeholder ")" på hver linje.
+        public void LegendTest1() {
+            foreach (string line in levelLoader1.legend) {
+                if (!line.Contains(")")) {
+                    retValLegend = false;
+                }
+                Assert.AreEqual(true, retValLegend);
+            }
         }
+
+        [Test]
+        public void LegendTest2() {
+            foreach (string line in levelLoader2.legend) {
+                if (!line.Contains(")")) {
+                    retValLegend = false;
+                }
+                Assert.AreEqual(true, retValLegend);
+            }
+        }
+
+        //[Test]
+        //public void InvalidFileName() {
+        //    Assert.Throws<FileNotFoundException>();
+        //}
     }
 }
