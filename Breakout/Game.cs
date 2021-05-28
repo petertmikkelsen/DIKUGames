@@ -14,9 +14,9 @@ using Breakout.Utilities;
 
 namespace Breakout {
     public class Game : DIKUGame {
-        public Ball ball;
-        public Player player;
-        public EntityContainer<Block> blocks;
+        private Ball ball;
+        private Player player;
+        private EntityContainer<Block> blocks;
         private LevelCreator levelCreator;
         private CollisionControler collisionControler;
 
@@ -33,7 +33,7 @@ namespace Breakout {
             collisionControler = new CollisionControler (blocks, ball, player);
         }
 
-        public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        private void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (action == KeyboardAction.KeyPress) {
                 switch (key) {
                     case KeyboardKey.Left:

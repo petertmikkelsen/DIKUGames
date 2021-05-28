@@ -15,12 +15,12 @@ namespace Breakout
     public class LevelCreator
     {
         LevelLoader levelLoader = new LevelLoader();
-        public EntityContainer<Block> blocks;
+        public EntityContainer<Block> blocks { private set; get; }
         public string[] map { private set; get; }
 
-        Dictionary<string, string> metaDictionary =
+        private Dictionary<string, string> metaDictionary =
             new Dictionary<string, string>();
-        Dictionary<string, string> legendDictionary =
+        private Dictionary<string, string> legendDictionary =
             new Dictionary<string, string>();
 
         
@@ -30,7 +30,7 @@ namespace Breakout
         }
         
         // Creates a block and add it to the block list
-        public void CreateBlock (Vec2F position, string image) {
+        private void CreateBlock (Vec2F position, string image) {
             if (image == "darkgreen-block.png" ) {
                 blocks.AddEntity(new HardenedBlock(
                     new StationaryShape(position, new Vec2F(0.08f, 0.03f)),

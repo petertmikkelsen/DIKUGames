@@ -9,13 +9,13 @@ using DIKUArcade.GUI;
 using DIKUArcade.Entities;
 
 namespace Breakout {
-    public class Player {
+    public class Player : Entity{
         public Entity entity;
         public DynamicShape shape;
         private float moveLeft = 0.0f;
         private float moveRight = 0.0f;
-        private const float MOVEMENT_SPEED = 0.01f;
-        public Player(DynamicShape shape, IBaseImage image) {
+        private const float movementSpeed = 0.01f;
+        public Player(DynamicShape shape, IBaseImage image) : base(shape, image){
             entity = new Entity(shape, image);
             this.shape = shape;
         }
@@ -40,7 +40,7 @@ namespace Breakout {
             switch (val)
             {
                 case true:
-                    moveLeft = -MOVEMENT_SPEED;
+                    moveLeft = -movementSpeed;
                         break;
                 case false:
                     moveLeft = 0.0f;
@@ -52,7 +52,7 @@ namespace Breakout {
             switch (val)
             {
                 case true:
-                    moveRight = MOVEMENT_SPEED;
+                    moveRight = movementSpeed;
                         break;
                 case false:
                     moveRight = 0.0f;

@@ -19,16 +19,6 @@ namespace Breakout
             
             var game = new Game(windowArgs);
             game.Run();
-
-            // var test = new LevelLoader();
-            // test.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
-
-            // foreach(string i in test.legend){
-            //     Console.WriteLine(i);
-            // }
-
-            // Console.WriteLine(test.legend);
-
         }
     }
 }

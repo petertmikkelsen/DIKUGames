@@ -16,14 +16,14 @@ namespace Breakout {
         public string[] map { private set; get; }
         public string[] meta { private set; get; }
         public string[] legend { private set; get; }
-        Dictionary<string, string> metaDictionary =
+        private Dictionary<string, string> metaDictionary =
             new Dictionary<string, string>();
-        Dictionary<string, string> legendDictionary =
+        private Dictionary<string, string> legendDictionary =
             new Dictionary<string, string>();
-        public EntityContainer<Block> blocks = new EntityContainer<Block>();
+        private EntityContainer<Block> blocks = new EntityContainer<Block>();
         
         // Breaks file into three subfiles
-        public string[] CreateSubFile(string subFileName) {
+        private string[] CreateSubFile(string subFileName) {
             var firstWord = subFileName + ":";
             var lastWord = subFileName + "/";
             if (Array.Exists(file, element => element == firstWord) && Array.Exists(file, element => element == lastWord)) {
@@ -37,14 +37,14 @@ namespace Breakout {
         }
 
         // Calls CreateSubFile
-        public void CreateAllSubFiles() {
+        private void CreateAllSubFiles() {
             map = CreateSubFile("Map");
             meta = CreateSubFile("Meta");
             legend = CreateSubFile("Legend");
         }
 
         // Creates dictionary based on map file
-        public void metaToDictionary() {
+        private void metaToDictionary() {
             foreach (string i in meta) {
                 if (i.Contains(":")) {
                     int middle;
@@ -55,7 +55,7 @@ namespace Breakout {
         }
 
         // Creates dictionary based on legend file
-        public void legendToDictionary() {
+        private void legendToDictionary() {
             foreach (string i in legend) {
                 legendDictionary.Add(i.Substring(0, 1), i.Substring(3));
             }

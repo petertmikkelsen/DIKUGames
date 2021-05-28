@@ -29,8 +29,6 @@ namespace Breakout
         public void CollisionDetector() {
 
             blocks.Iterate(Block => {
-                // var collisionData = CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape);
-
                 if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirDown ||
                         CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirUp) {
                     Block.TakeDamage();
