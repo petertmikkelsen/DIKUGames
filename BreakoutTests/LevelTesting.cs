@@ -122,7 +122,7 @@ namespace BreakoutTests
         }
         void WrongInputException() {
             levelCreator = new LevelCreator(blocks);
-            levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
+            levelCreator.LoadNewlevel(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "Anders And"));
         }
     }
 }
