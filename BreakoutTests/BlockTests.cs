@@ -18,20 +18,21 @@ namespace BreakoutTests
     public class BlockTests
     {
         private LevelCreator levelCreator;
-        private EntityContainer<Block> blocks;
+        private LevelLoader levelLoader0;
+        //private EntityContainer<Block> blocks;
         [SetUp]
         public void Setup() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            levelCreator = new LevelCreator(blocks);
+            levelLoader0 = new LevelLoader();
+            levelLoader0.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "testmap.txt"));
+            levelCreator = new LevelCreator(levelCreator.blocks);
             levelCreator.LoadNewlevel(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "testmap.txt"));
         }
 
-        //[Test]
-        //public void blocksSpawnsCorrectly() {
-        //    blocks.Iterate(Block => {
-        //        Assert.AreEqual(Block.Shape.Position, (0,1f, 0,92f));
-        //        Assert.AreEqual(Block.Shape.Position, (0,26f, 0,92f));
-        //    });
-        //}
+        [Test]
+        public void blocksSpawnsCorrectly() {
+            foreach (Block block in levelCreator.blocks)
+                Assert.AreEqual(block.Shape.Position, (0,1f, 0,92f));
+        }
     }
 }
