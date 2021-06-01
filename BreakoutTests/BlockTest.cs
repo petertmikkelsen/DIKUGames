@@ -41,5 +41,12 @@ namespace BreakoutTests
             testNormalBlock.TakeDamage();
             Assert.AreEqual(testNormalBlock.IsDeleted(), true);
         }
+
+        [Test]
+        public void ImageChangeTest() {
+            testHardenedBlock.TakeDamage();
+            var result = testHardenedBlock.Image;
+            Assert.That(result, Is.EqualTo("teal-block-damaged.png"));
+        }
     }
 }
