@@ -14,11 +14,13 @@ using Breakout.Utilities;
 
 namespace Breakout {
     public class Game : DIKUGame {
-        private Ball ball;
-        private Player player;
-        private EntityContainer<Block> blocks;
+        public Ball ball {private set; get;}
+        public Player player {private set; get;}
+        public EntityContainer<Block> blocks {private set; get;}
         private LevelCreator levelCreator;
-        private CollisionControler collisionControler;
+        public CollisionControler collisionControler {private set; get;}
+        private StateMachine stateMachine;
+        
 
 
         public Game(WindowArgs windowArgs) : base (windowArgs) {
@@ -29,8 +31,14 @@ namespace Breakout {
                 new Image(ImageDatabase.GetImageFilePath("ball.png")));
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
+           
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
+            //stateMachine = new StateMachine(this);
+            //BreakoutBus.GetBus().InitializeEventBus(new List<GameEventType>{
+            //    GameEventType.GameStateEvent,
+            //    GameEventType.InputEvent
+            //});
         }
 
         private void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
@@ -64,9 +72,14 @@ namespace Breakout {
         }
        
         public override void Render() {
+            //stateMachine.Render();
             ball.Render();
             player.Render();
-            levelCreator.blocks.RenderEntities();
+            blocks.RenderEntities();
+
+            
+            
+
         }
         public override void Update() {
             player.Move();

@@ -11,7 +11,7 @@ using DIKUArcade.Entities;
 namespace Breakout
 {
     public abstract class Block : Entity {
-        protected int hitPoints;
+        public int hitPoints {protected set; get;}
         
         public Block(StationaryShape shape, IBaseImage image) : base(shape, image) {
         }

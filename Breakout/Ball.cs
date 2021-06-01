@@ -4,6 +4,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
+using DIKUArcade.Events;
 
 
 namespace Breakout
@@ -52,6 +53,14 @@ namespace Breakout
             shape.Direction.X = x;
             float y = MathF.Sqrt(MathF.Pow(this.speed, 2.0f)+MathF.Pow(x,2.0f));
             shape.Direction.Y = y;
+
+
+            // GameEvent gameevent = new GameEvent ();
+// 
+            // gameevent.EventType = GameEventType.GameStateEvent;
+            // gameevent.Message = "GAME_OVER";
+// 
+            // BreakoutBus.GetBus.RedigisterEvent (gameevent);
         }
         
         public Vec2F GetPosition() {
