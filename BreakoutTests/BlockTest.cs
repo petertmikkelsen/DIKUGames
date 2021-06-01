@@ -46,7 +46,7 @@ namespace BreakoutTests
         public void ImageChangeTest() {
             testHardenedBlock.TakeDamage();
             var result = testHardenedBlock.Image;
-            Assert.That(result, Is.EqualTo("teal-block-damaged.png"));
+            Assert.That(result, Is.EqualTo(new Image(Path.Combine("Assets", "Images", "darkgreen-block-damaged.png"))));
         }
     }
 }
