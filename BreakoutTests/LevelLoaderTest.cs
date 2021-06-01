@@ -20,7 +20,7 @@ namespace BreakoutTests
         private LevelLoader levelLoader1;
         private LevelLoader levelLoader2;
         private LevelCreator levelCreator;
-        //private EntityContainer<Block> blocks;
+        private EntityContainer<Block> blocks;
         bool retValMeta = true;
         bool retValLegend = true;
 
@@ -121,7 +121,7 @@ namespace BreakoutTests
             Assert.Throws<FileNotFoundException>(WrongInputException);
         }
         void WrongInputException() {
-            levelCreator = new LevelCreator(levelCreator.blocks);
+            levelCreator = new LevelCreator(blocks);
             levelCreator.LoadNewlevel(ImageDatabase.GetImageFilePath("Anders And"));
         }
     }
