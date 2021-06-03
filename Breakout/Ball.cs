@@ -51,7 +51,7 @@ namespace Breakout
         public void SetPositionPlayerHit(float x) {
 
             shape.Direction.X = x;
-            float y = MathF.Sqrt(MathF.Pow(this.speed, 2.0f)+MathF.Pow(x,2.0f));
+            float y = MathF.Sqrt(MathF.Pow(this.speed, 2.0f)-MathF.Pow(x,2.0f));
             shape.Direction.Y = y;
 
 
