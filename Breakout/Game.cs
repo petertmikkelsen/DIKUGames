@@ -75,10 +75,7 @@ namespace Breakout {
             //stateMachine.Render();
             ball.Render();
             player.Render();
-            blocks.RenderEntities();
-
-            
-            
+            blocks.RenderEntities();            
 
         }
         public override void Update() {

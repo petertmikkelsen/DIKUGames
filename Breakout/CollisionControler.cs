@@ -45,6 +45,7 @@ namespace Breakout
                 if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
                     float playerPosMid = player.shape.Position.X+player.shape.Extent.X/2.0f;
                     float x = (ball.shape.Position.X-playerPosMid)*0.07f;
+                    
                     ball.SetPositionPlayerHit(x);
                 }
             });
