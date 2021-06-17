@@ -26,13 +26,14 @@ namespace Breakout {
         private string[] CreateSubFile(string subFileName) {
             var firstWord = subFileName + ":";
             var lastWord = subFileName + "/";
-            if (Array.Exists(file, element => element == firstWord) && Array.Exists(file, element => element == lastWord)) {
-                var subFileStarts = Array.IndexOf(file, firstWord) + 1;
-                var subFileEnds = Array.IndexOf(file, lastWord);
-                string[] arr = new string[subFileEnds - subFileStarts]; 
-                for (int i = subFileStarts; i < subFileEnds; i++)
-                    arr[i - subFileStarts] = file[i];
-                return arr;
+            if (Array.Exists(file, element => element == firstWord) 
+                && Array.Exists(file, element => element == lastWord)) {
+                    var subFileStarts = Array.IndexOf(file, firstWord) + 1;
+                    var subFileEnds = Array.IndexOf(file, lastWord);
+                    string[] arr = new string[subFileEnds - subFileStarts]; 
+                    for (int i = subFileStarts; i < subFileEnds; i++)
+                        arr[i - subFileStarts] = file[i];
+                    return arr;
             } else return new string[0]; 
         }
 
@@ -62,11 +63,11 @@ namespace Breakout {
         }
 
         public (string[], Dictionary<string, string>, Dictionary<string, string>) GetSubfiles(string levelAsASCII) {
-            file = File.ReadAllLines(levelAsASCII);
-            CreateAllSubFiles();
-            metaToDictionary();
-            legendToDictionary();
-            return (map, metaDictionary, legendDictionary);
+                file = File.ReadAllLines(levelAsASCII);
+                CreateAllSubFiles();
+                metaToDictionary();
+                legendToDictionary();
+                return (map, metaDictionary, legendDictionary);
         }
     }
 }

@@ -11,9 +11,10 @@ using DIKUArcade.Math;
 using DIKUArcade.Input;
 using DIKUArcade.Physics;
 using Breakout.Utilities;
+using Breakout;
 
 namespace Breakout {
-    public class Game : DIKUGame {
+    public class Game : DIKUGame, IGameEventProcessor {
         public Ball ball {private set; get;}
         public Player player {private set; get;}
         public EntityContainer<Block> blocks {private set; get;}
@@ -31,6 +32,8 @@ namespace Breakout {
                 new Image(ImageDatabase.GetImageFilePath("ball.png")));
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
+
+            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
            
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
@@ -53,6 +56,13 @@ namespace Breakout {
                     case KeyboardKey.Escape:
                         window.CloseWindow();
                             break;
+                    case KeyboardKey.C:
+                        // sender et event afsted af typen WindowEvent
+                        Console.WriteLine("event sendt afsted");
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+                            EventType = GameEventType.WindowEvent, Message = "CHANGE_COLOR" });
+                        // window.SetClearColor(System.Drawing.Color.Chocolate);
+                        break;
                     default:
                         break;
                 }
@@ -83,5 +93,14 @@ namespace Breakout {
             ball.Move();
             collisionControler.CollisionDetector();
         }
+
+        public void ProcessEvent(GameEvent gameEvent)
+        {
+            // if (gameEvent.Message == "CHANGE_COLOR") {
+            //     Console.WriteLine("event modtaget");
+            //     window.SetClearColor(System.Drawing.Color.Chocolate);
+            // }
+        }
+
     }
 }

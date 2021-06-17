@@ -25,7 +25,8 @@ namespace Breakout
                 Image = new Image(ImageDatabase.GetImageFilePath("Darkgreen-block-damaged.png"));
             }
             if (hitPoints <= 0) {
-                this.DeleteEntity();  
+                this.DeleteEntity();
+                 
             }      
         }
     }
