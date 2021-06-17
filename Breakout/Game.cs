@@ -20,7 +20,7 @@ namespace Breakout {
         public EntityContainer<Block> blocks {private set; get;}
         private LevelCreator levelCreator;
         public CollisionControler collisionControler {private set; get;}
-        private StateMachine stateMachine;
+        // private StateMachine stateMachine;
         
 
 
@@ -33,7 +33,9 @@ namespace Breakout {
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
 
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+            BreakoutBus.GetBus().InitializeEventBus(new List <GameEventType> {GameEventType.WindowEvent, GameEventType.GameStateEvent});
+
+            BreakoutBus.GetBus().Subscribe(GameEventType.WindowEvent, this);
            
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
@@ -58,9 +60,14 @@ namespace Breakout {
                             break;
                     case KeyboardKey.C:
                         // sender et event afsted af typen WindowEvent
-                        Console.WriteLine("event sendt afsted");
                         BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.WindowEvent, Message = "CHANGE_COLOR" });
+                        // window.SetClearColor(System.Drawing.Color.Chocolate);
+                        break;
+                    case KeyboardKey.X:
+                        // sender et event afsted af typen WindowEvent
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+                            EventType = GameEventType.GameStateEvent, Message = "MAIN_MENU" });
                         // window.SetClearColor(System.Drawing.Color.Chocolate);
                         break;
                     default:
@@ -92,15 +99,15 @@ namespace Breakout {
             player.Move();
             ball.Move();
             collisionControler.CollisionDetector();
+            BreakoutBus.GetBus().ProcessEvents();
         }
 
         public void ProcessEvent(GameEvent gameEvent)
         {
-            // if (gameEvent.Message == "CHANGE_COLOR") {
-            //     Console.WriteLine("event modtaget");
-            //     window.SetClearColor(System.Drawing.Color.Chocolate);
-            // }
+            if (gameEvent.Message == "CHANGE_COLOR") {
+                Console.WriteLine("event modtaget");
+                window.SetClearColor(System.Drawing.Color.Chocolate);
+            }
         }
-
     }
 }

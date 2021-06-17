@@ -4,9 +4,10 @@ using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Events;
+using Breakout;
 
 
-namespace Breakout.States {
+namespace Breakout {
 
     /// <summary>
     /// A game state for when the game is running.
