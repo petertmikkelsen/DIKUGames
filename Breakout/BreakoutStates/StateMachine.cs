@@ -33,6 +33,8 @@ namespace Breakout {
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
         }
 
+        
+
         private void SwitchState(GameStateType stateType) {
             switch (stateType) {
                 case GameStateType.GameRunning:
