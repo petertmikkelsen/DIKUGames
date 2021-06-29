@@ -29,8 +29,26 @@ namespace Breakout {
             GameRunning = new GameRunning();
             GamePaused = new GamePaused();
 
-            ActiveState = MainMenu;
+            ActiveState = GameRunning;
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+        }
+
+        public IGameState GetGameState(GameStateType gameStateType) {
+            IGameState gameState = null;
+            switch (gameStateType) {
+                case GameStateType.MainMenu:
+                    gameState = MainMenu;
+                    break;
+                case GameStateType.GameRunning:
+                    gameState = GameRunning;
+                    break;
+                case GameStateType.GamePaused:
+                    gameState = GamePaused;
+                    break;
+                default:
+                    break;
+            }
+            return gameState;
         }
 
         
@@ -59,17 +77,17 @@ namespace Breakout {
 
         public void UpdateState()
         {
-            throw new NotImplementedException();
+            ActiveState.UpdateState();
         }
 
         public void RenderState()
         {
-            throw new NotImplementedException();
+            ActiveState.RenderState();
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key)
         {
-            throw new NotImplementedException();
+            ActiveState.HandleKeyEvent(action, key);
         }
     }
 

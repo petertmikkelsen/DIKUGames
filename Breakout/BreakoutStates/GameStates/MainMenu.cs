@@ -40,7 +40,7 @@ namespace Breakout {
 
         public void UpdateState()
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }
