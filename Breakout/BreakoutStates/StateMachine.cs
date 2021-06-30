@@ -16,21 +16,21 @@ using DIKUArcade.Input;
 
 namespace Breakout {
     public class StateMachine : IGameEventProcessor, IGameState {
-        public IGameState ActiveState { get; private set;}
+        private static StateMachine stateMachine;
+        public IGameState ActiveState { get; private set; }
         private IGameState MainMenu;
         private IGameState GameRunning;
         private IGameState GamePaused;
 
         public StateMachine() {
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
+            // BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
 
             MainMenu = new MainMenu();
             GameRunning = new GameRunning();
             GamePaused = new GamePaused();
 
-            ActiveState = GameRunning;
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+            ActiveState = MainMenu;
         }
 
         public IGameState GetGameState(GameStateType gameStateType) {
@@ -51,12 +51,15 @@ namespace Breakout {
             return gameState;
         }
 
-        
+        public static StateMachine GetStateMachine() {
+            return stateMachine ?? (stateMachine = new StateMachine());
+        }
 
-        private void SwitchState(GameStateType stateType) {
+        public void SwitchState(GameStateType stateType) {
             switch (stateType) {
                 case GameStateType.GameRunning:
                     ActiveState = GameRunning;
+                    System.Console.WriteLine("Besked modtaget...");
                     break;
                 default:
                     break; 
@@ -64,15 +67,20 @@ namespace Breakout {
         }
 
         public void ProcessEvent(GameEvent gameEvent) {
-            if (gameEvent.Message == "MAIN_MENU") {
-                System.Console.WriteLine("virker");
-                SwitchState(GameStateType.MainMenu);
-            }
+            // if (gameEvent.Message == "SWITCH_STATE") {
+            //     switch (gameEvent.StringArg1) {
+            //         case "MAIN_MENU":
+            //             SwitchState(GameStateType.MainMenu);
+            //             break;
+            //         case "GAME_RUNNING":
+            //             SwitchState(GameStateType.GameRunning);
+            //             break;
+            //     }
+            // }
         }
 
         public void ResetState()
         {
-            throw new NotImplementedException();
         }
 
         public void UpdateState()

@@ -20,6 +20,7 @@ namespace Breakout {
 
         public Game(WindowArgs windowArgs) : base (windowArgs) {
             window.SetKeyEventHandler(HandleKeyEvent);
+            //window.SetClearColor(System.Drawing.Color.AliceBlue);
 
             stateMachine = new StateMachine();
 
@@ -31,8 +32,6 @@ namespace Breakout {
         private void HandleKeyEvent(KeyboardAction action, KeyboardKey key){
             stateMachine.HandleKeyEvent(action, key);
         }
-
-        // ælaksdjf
        
         public override void Render() {
             stateMachine.RenderState();         

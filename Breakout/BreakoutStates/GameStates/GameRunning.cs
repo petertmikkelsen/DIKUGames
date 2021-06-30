@@ -52,21 +52,6 @@ namespace Breakout {
                     case KeyboardKey.Right:
                         player.SetMoveRight(true);
                             break;
-                    // case KeyboardKey.Escape:
-                    //     window.CloseWindow();
-                    //         break;
-                    case KeyboardKey.C:
-                        // sender et event afsted af typen WindowEvent
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
-                            EventType = GameEventType.WindowEvent, Message = "CHANGE_COLOR" });
-                        // window.SetClearColor(System.Drawing.Color.Chocolate);
-                        break;
-                    case KeyboardKey.X:
-                        // sender et event afsted af typen WindowEvent
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
-                            EventType = GameEventType.GameStateEvent, Message = "MAIN_MENU" });
-                        // window.SetClearColor(System.Drawing.Color.Chocolate);
-                        break;
                     default:
                         break;
                 }
@@ -92,20 +77,15 @@ namespace Breakout {
 
 
 
-        public void RenderState()
-        {
+        public void RenderState() {
             ball.Render();
             player.Render();
             blocks.RenderEntities();  
         }
 
-        public void ResetState()
-        {
-            throw new System.NotImplementedException();
-        }
+        public void ResetState() {}
 
-        public void UpdateState()
-        {
+        public void UpdateState() {
             player.Move();
             ball.Move();
             collisionControler.CollisionDetector();
