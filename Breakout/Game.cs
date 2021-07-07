@@ -16,13 +16,10 @@ using DIKUArcade.State;
 
 namespace Breakout {
     public class Game : DIKUGame, IGameEventProcessor {
-        private StateMachine stateMachine;
 
         public Game(WindowArgs windowArgs) : base (windowArgs) {
             window.SetKeyEventHandler(HandleKeyEvent);
             //window.SetClearColor(System.Drawing.Color.AliceBlue);
-
-            stateMachine = new StateMachine();
 
             BreakoutBus.GetBus().InitializeEventBus(new List <GameEventType> {GameEventType.WindowEvent, GameEventType.GameStateEvent});
 
@@ -30,14 +27,14 @@ namespace Breakout {
 
         }
         private void HandleKeyEvent(KeyboardAction action, KeyboardKey key){
-            stateMachine.HandleKeyEvent(action, key);
+            StateMachine.GetStateMachine().HandleKeyEvent(action, key);
         }
        
         public override void Render() {
-            stateMachine.RenderState();         
+            StateMachine.GetStateMachine().RenderState();         
         }
         public override void Update() {
-            stateMachine.UpdateState();
+            StateMachine.GetStateMachine().UpdateState();
             BreakoutBus.GetBus().ProcessEvents();
         }
 

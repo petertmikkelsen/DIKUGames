@@ -72,7 +72,7 @@ namespace Breakout {
 
         public void ProcessEvent(GameEvent gameEvent)
         {
-            throw new System.NotImplementedException();
+
         }
 
 

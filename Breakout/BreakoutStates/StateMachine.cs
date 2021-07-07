@@ -22,7 +22,7 @@ namespace Breakout {
         private IGameState GameRunning;
         private IGameState GamePaused;
 
-        public StateMachine() {
+        private StateMachine() {
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
             // BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
 
@@ -31,6 +31,7 @@ namespace Breakout {
             GamePaused = new GamePaused();
 
             ActiveState = MainMenu;
+            stateMachine = this;
         }
 
         public IGameState GetGameState(GameStateType gameStateType) {
