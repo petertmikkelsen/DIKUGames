@@ -37,6 +37,8 @@ namespace Breakout {
 
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
+            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+            //BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
@@ -52,6 +54,21 @@ namespace Breakout {
                     case KeyboardKey.Right:
                         player.SetMoveRight(true);
                             break;
+                    case KeyboardKey.J:
+                        player.SetMoveLeft(true);
+                            break;
+                    case KeyboardKey.L:
+                        player.SetMoveRight(true);
+                            break;
+                    case KeyboardKey.P:
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                            EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_RIGHT", Message = "KEY_RELEASE"});
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                            EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_LEFT", Message = "KEY_RELEASE"});
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                            EventType = GameEventType.GameStateEvent, Message = "GAME_PAUSED"});
+                        StateMachine.GetStateMachine().SwitchState(GameStateType.GamePaused);
+                            break;
                     default:
                         break;
                 }
@@ -64,6 +81,12 @@ namespace Breakout {
                     case KeyboardKey.Right:
                         player.SetMoveRight(false);
                             break;
+                    case KeyboardKey.J:
+                        player.SetMoveLeft(false);
+                            break;
+                    case KeyboardKey.L:
+                        player.SetMoveRight(false);
+                            break;
                     default:
                         break;
                 }
@@ -74,16 +97,16 @@ namespace Breakout {
         {
 
         }
-
-
-
         public void RenderState() {
             ball.Render();
             player.Render();
             blocks.RenderEntities();  
         }
 
-        public void ResetState() {}
+        public void ResetState() {
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                EventType = GameEventType.GameStateEvent, Message = "START_GAME"});
+        }
 
         public void UpdateState() {
             player.Move();

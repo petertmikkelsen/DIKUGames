@@ -60,24 +60,29 @@ namespace Breakout {
             switch (stateType) {
                 case GameStateType.GameRunning:
                     ActiveState = GameRunning;
-                    System.Console.WriteLine("Besked modtaget...");
-                    break;
+                        break;
+                case GameStateType.GamePaused:
+                    ActiveState = GamePaused;
+                        break;
                 default:
                     break; 
             }
         }
 
         public void ProcessEvent(GameEvent gameEvent) {
-            // if (gameEvent.Message == "SWITCH_STATE") {
-            //     switch (gameEvent.StringArg1) {
-            //         case "MAIN_MENU":
-            //             SwitchState(GameStateType.MainMenu);
-            //             break;
-            //         case "GAME_RUNNING":
-            //             SwitchState(GameStateType.GameRunning);
-            //             break;
-            //     }
-            // }
+            if (gameEvent.Message == "SWITCH_STATE") {
+                switch (gameEvent.StringArg1) {
+                    case "MAIN_MENU":
+                        SwitchState(GameStateType.MainMenu);
+                        break;
+                    case "GAME_RUNNING":
+                        SwitchState(GameStateType.GameRunning);
+                        break;
+                    case "GAME_PASUED":
+                        SwitchState(GameStateType.GamePaused);
+                        break;
+                }
+            }
         }
 
         public void ResetState()

@@ -1,9 +1,11 @@
+using System;
+using System.IO;
 using DIKUArcade.State;
 using DIKUArcade.Input;
 using DIKUArcade.Events;
+using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade.Timers;
 using Breakout;
 
 
@@ -13,26 +15,58 @@ namespace Breakout {
     /// A game state for when the game is paused. From this state one should be
     /// able to choose between unpausin or enter the main menu state.
     /// </summary>
-    public class GamePaused : IGameState
-    {
-        public void HandleKeyEvent(KeyboardAction action, KeyboardKey key)
-        {
-            throw new System.NotImplementedException();
+    public class GamePaused : IGameState {   
+        private Entity background;
+        private Text ResumeGame;
+        private Text MainMenu;
+
+        public GamePaused() {
+            background = new Entity(Constants.BackGroundShape, 
+                new Image(Path.Combine("../", "Breakout","Assets", "Images", "BreakoutTitleScreen.png")));
+            
+            ResumeGame = new Text("Press P \nto resume", new Vec2F(0.01f, 0.4f), new Vec2F(0.2f, 0.2f));
+            ResumeGame.SetColor(255, 255, 255, 255); 
+
+            MainMenu = new Text("Press M \nto Menu", new Vec2F(0.01f, 0.2f), new Vec2F(0.2f, 0.2f));
+            MainMenu.SetColor(255, 255, 255, 255);
+        }
+        public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+            if (action == KeyboardAction.KeyPress) {
+                switch (key) {
+                    case KeyboardKey.Escape:
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+                            EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
+                        break;
+                    case KeyboardKey.P:
+                    //    BreakoutBus.GetBus().RegisterTimedEvent(new GameEvent {
+                    //        EventType = GameEventType.GameStateEvent, Message = "GAME_UNPAUSED"}, TimePeriod.NewSeconds(1.0));
+                        StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning);
+                        break;
+                    case KeyboardKey.M:
+                        StateMachine.GetStateMachine().SwitchState(GameStateType.MainMenu);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public void RenderState()
         {
-            throw new System.NotImplementedException();
+
+            background.RenderEntity();
+            ResumeGame.RenderText();
+            MainMenu.RenderText();
         }
 
         public void ResetState()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void UpdateState()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

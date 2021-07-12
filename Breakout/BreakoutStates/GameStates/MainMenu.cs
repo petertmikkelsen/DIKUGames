@@ -34,7 +34,9 @@ namespace Breakout {
             if (action == KeyboardAction.KeyPress) {
                 if (key == KeyboardKey.Space) {
                     // StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning).ResetState();
-                    StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning); 
+                    StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning);
+                    //BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                    //    EventType = GameEventType.GameStateEvent, Message = "GAME_RUNNING"}); 
                 } else if (key == KeyboardKey.Escape) {
                     BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                         EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
