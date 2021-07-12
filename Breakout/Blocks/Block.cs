@@ -12,9 +12,18 @@ namespace Breakout
 {
     public abstract class Block : Entity {
         public int hitPoints {protected set; get;}
+        public int PointValue {protected set; get;}
         
-        public Block(StationaryShape shape, IBaseImage image) : base(shape, image) {
+        public Block(StationaryShape shape, IBaseImage image, int PointVal) : base(shape, image){
+            PointValue = PointVal;
         }
-        public abstract void TakeDamage ();
+        public virtual void TakeDamage() {
+            hitPoints -= 1;
+            if (hitPoints <= 0) {
+                this.DeleteEntity();
+                var game = StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning) as GameRunning;
+                game.AddPoints(PointValue);
+            } 
+        }
     }
 }

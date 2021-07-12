@@ -14,20 +14,16 @@ namespace Breakout
 {
     public class HardenedBlock : Block
     {
-        public HardenedBlock(StationaryShape shape, IBaseImage image) : base(shape, image) { 
-            this.hitPoints = 2; 
+        public HardenedBlock(StationaryShape shape, IBaseImage image) : base(shape, image, 2) { 
+            hitPoints = 2; 
         }
 
         public override void TakeDamage()
         {
-            hitPoints -= 1;
+            base.TakeDamage();
             if (hitPoints == 1) {
                 Image = new Image(ImageDatabase.GetImageFilePath("Darkgreen-block-damaged.png"));
-            }
-            if (hitPoints <= 0) {
-                this.DeleteEntity();
-                 
-            }      
+            } 
         }
     }
     

@@ -26,14 +26,16 @@ namespace Breakout {
         public EntityContainer<Block> blocks {private set; get;}
         private LevelCreator levelCreator;
         public CollisionControler collisionControler {private set; get;}
+        private int points = 0;
 
         public GameRunning() {
             player = new Player(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(ImageDatabase.GetImageFilePath("Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)), 
+            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
                 new Image(ImageDatabase.GetImageFilePath("ball.png")));
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
+            
 
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
@@ -112,6 +114,11 @@ namespace Breakout {
             player.Move();
             ball.Move();
             collisionControler.CollisionDetector();
+        }
+
+        public void AddPoints(int p) {
+            points += p;
+            Console.WriteLine(points);
         }
     }
 }

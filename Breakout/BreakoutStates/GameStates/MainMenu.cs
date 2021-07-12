@@ -23,17 +23,17 @@ namespace Breakout {
             background = new Entity(Constants.BackGroundShape, 
                 new Image(Path.Combine("../", "Breakout","Assets", "Images", "BreakoutTitleScreen.png")));
             
-            startGame = new Text("Press Space \nto start", new Vec2F(0.01f, 0.4f), new Vec2F(0.2f, 0.2f));
+            startGame = new Text("Press Space \nto start", new Vec2F(0.35f, 0.4f), new Vec2F(0.3f, 0.3f));
             startGame.SetColor(255, 255, 255, 255); 
 
-            exitGame = new Text("Press Escape \nto exit", new Vec2F(0.01f, 0.2f), new Vec2F(0.2f, 0.2f));
-            exitGame.SetColor(255, 255, 255, 255);   
+            exitGame = new Text("Press Escape \nto exit", new Vec2F(0.35f, 0.2f), new Vec2F(0.3f, 0.3f));
+            exitGame.SetColor(255, 255, 255, 255);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (action == KeyboardAction.KeyPress) {
                 if (key == KeyboardKey.Space) {
-                    // StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning).ResetState();
+                    StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning).ResetState();
                     StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning);
                     //BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                     //    EventType = GameEventType.GameStateEvent, Message = "GAME_RUNNING"}); 

@@ -64,8 +64,11 @@ namespace Breakout {
                 case GameStateType.GamePaused:
                     ActiveState = GamePaused;
                         break;
+                case GameStateType.MainMenu:
+                    ActiveState = MainMenu;
+                        break;
                 default:
-                    break; 
+                    break;
             }
         }
 

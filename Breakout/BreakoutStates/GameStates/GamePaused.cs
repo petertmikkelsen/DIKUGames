@@ -24,10 +24,10 @@ namespace Breakout {
             background = new Entity(Constants.BackGroundShape, 
                 new Image(Path.Combine("../", "Breakout","Assets", "Images", "BreakoutTitleScreen.png")));
             
-            ResumeGame = new Text("Press P \nto resume", new Vec2F(0.01f, 0.4f), new Vec2F(0.2f, 0.2f));
+            ResumeGame = new Text("Press P \nto resume", new Vec2F(0.4f, 0.4f), new Vec2F(0.3f, 0.3f));
             ResumeGame.SetColor(255, 255, 255, 255); 
 
-            MainMenu = new Text("Press M \nto Menu", new Vec2F(0.01f, 0.2f), new Vec2F(0.2f, 0.2f));
+            MainMenu = new Text("Press M \nto Menu", new Vec2F(0.4f, 0.2f), new Vec2F(0.3f, 0.3f));
             MainMenu.SetColor(255, 255, 255, 255);
         }
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
