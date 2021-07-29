@@ -21,6 +21,7 @@ namespace BreakoutTests
         private NormalBlock testNormalBlock;
         [SetUp]
         public void setup() {
+            System.IO.Directory.SetCurrentDirectory("C:/Users/Peter/Documents/C#/EksamenProjekt/DIKUGames/Breakout");
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             testHardenedBlock = new HardenedBlock(
                     new StationaryShape(new Vec2F(0.08f, 0.03f), new Vec2F(0.08f, 0.03f)),
@@ -31,6 +32,7 @@ namespace BreakoutTests
         }
         [Test]
         public void HardenedBlockTest() {
+            Console.WriteLine("Starting HardenedBlockTest");
             testHardenedBlock.TakeDamage();
             testHardenedBlock.TakeDamage();
             Assert.AreEqual(testHardenedBlock.IsDeleted(), true);

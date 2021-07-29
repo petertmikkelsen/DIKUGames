@@ -26,6 +26,7 @@ namespace Breakout {
         public EntityContainer<Block> blocks {private set; get;}
         private LevelCreator levelCreator;
         public CollisionControler collisionControler {private set; get;}
+        private Text showPoints;
         private int points = 0;
 
         public GameRunning() {
@@ -33,6 +34,10 @@ namespace Breakout {
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(ImageDatabase.GetImageFilePath("Player.png")));
             ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
                 new Image(ImageDatabase.GetImageFilePath("ball.png")));
+            showPoints = new Text(points.ToString(), new Vec2F(0.95f, 0.70f), new Vec2F(0.3f, 0.3f));
+            showPoints.SetColor(System.Drawing.Color.BlanchedAlmond); 
+            showPoints.SetFontSize(60);
+
             blocks = new EntityContainer<Block>();
             levelCreator = new LevelCreator(blocks);
             
@@ -40,7 +45,6 @@ namespace Breakout {
             levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
             collisionControler = new CollisionControler (blocks, ball, player);
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-            //BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
@@ -102,9 +106,10 @@ namespace Breakout {
         public void RenderState() {
             ball.Render();
             player.Render();
-            blocks.RenderEntities();  
+            blocks.RenderEntities();
+            showPoints.RenderText();
         }
-
+ 
         public void ResetState() {
             BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                 EventType = GameEventType.GameStateEvent, Message = "START_GAME"});
@@ -118,7 +123,8 @@ namespace Breakout {
 
         public void AddPoints(int p) {
             points += p;
-            Console.WriteLine(points);
+            showPoints.SetText(points.ToString());
+            //Console.WriteLine(points);
         }
     }
 }

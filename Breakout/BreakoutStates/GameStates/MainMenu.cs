@@ -6,7 +6,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout;
-
+using Breakout.Utilities;
 
 namespace Breakout {
 
@@ -21,7 +21,7 @@ namespace Breakout {
 
         public MainMenu() {
             background = new Entity(Constants.BackGroundShape, 
-                new Image(Path.Combine("../", "Breakout","Assets", "Images", "BreakoutTitleScreen.png")));
+                new Image(Path.Combine(ImageDatabase.GetImageFilePath("BreakoutTitleScreen.png"))));
             
             startGame = new Text("Press Space \nto start", new Vec2F(0.35f, 0.4f), new Vec2F(0.3f, 0.3f));
             startGame.SetColor(255, 255, 255, 255); 

@@ -26,29 +26,30 @@ namespace BreakoutTests
 
         [SetUp]
         public void SetUp() {
+            System.IO.Directory.SetCurrentDirectory("C:/Users/Peter/Documents/C#/EksamenProjekt/DIKUGames/Breakout");
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             levelLoader0 = new LevelLoader();
-            levelLoader0.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level1.txt"));
+            levelLoader0.GetSubfiles(Path.Combine("Assets", "Levels", "level1.txt"));
             levelLoader1 = new LevelLoader();
-            levelLoader1.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level2.txt"));
+            levelLoader1.GetSubfiles(Path.Combine("Assets", "Levels", "level2.txt"));
             levelLoader2 = new LevelLoader();
-            levelLoader2.GetSubfiles(Path.Combine(FileIO.GetProjectPath(), "Assets", "Levels", "level3.txt"));
+            levelLoader2.GetSubfiles(Path.Combine("Assets", "Levels", "level3.txt"));
         }
 
         [Test]
         // Map er altid 25 linjer langt
         public void MapTest0() {
-            Assert.AreEqual(25 , levelLoader0.map.Length);
+            Assert.AreEqual(24 , levelLoader0.map.Length);
         }
 
         [Test]
         public void MapTest1() {
-            Assert.AreEqual(25 , levelLoader1.map.Length);
+            Assert.AreEqual(24 , levelLoader1.map.Length);
         }
 
         [Test]
         public void MapTest2() {
-            Assert.AreEqual(25 , levelLoader2.map.Length);
+            Assert.AreEqual(24 , levelLoader2.map.Length);
         }
 
         [Test]

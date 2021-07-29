@@ -28,8 +28,8 @@ namespace Breakout.Utilities
         }
 
         public static string GetImageFilePath(string filename) {
-            string base_path = FileIO.GetProjectPath();
-            string path = Path.Combine(base_path, "Assets", "Images", filename);
+            //string base_path = FileIO.GetProjectPath();
+            string path = Path.Combine(/*base_path,*/ "Assets", "Images", filename);
             return path;
         }
 
