@@ -13,118 +13,64 @@ using DIKUArcade.Physics;
 using Breakout.Utilities;
 using Breakout;
 using DIKUArcade.State;
+using Breakout.LevelHandling;
 
 namespace Breakout {
 
     /// <summary>
     /// A game state for when the game is running.
     /// </summary>
-    public class GameRunning : IGameState, IGameEventProcessor
-    {
-        public Ball ball {private set; get;}
-        public Player player {private set; get;}
-        public EntityContainer<Block> blocks {private set; get;}
-        private LevelCreator levelCreator;
-        public CollisionControler collisionControler {private set; get;}
-        private Text showPoints;
-        private int points = 0;
-
+    public class GameRunning : IGameState, IGameEventProcessor {
+        
+        public GameInstance gameInstance {private set; get;}
+        
         public GameRunning() {
-            player = new Player(
-                new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(ImageDatabase.GetImageFilePath("Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
-                new Image(ImageDatabase.GetImageFilePath("ball.png")));
-            showPoints = new Text(points.ToString(), new Vec2F(0.95f, 0.70f), new Vec2F(0.3f, 0.3f));
-            showPoints.SetColor(System.Drawing.Color.BlanchedAlmond); 
-            showPoints.SetFontSize(60);
-
-            blocks = new EntityContainer<Block>();
-            levelCreator = new LevelCreator(blocks);
+            gameInstance = new GameInstance();
             
-
-            levelCreator.LoadNewlevel(Path.Combine("Assets", "Levels", "level1.txt"));
-            collisionControler = new CollisionControler (blocks, ball, player);
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+            BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+            if (GameKeyEvent(action, key)) 
+                return;
+            if (gameInstance.GameKeyEvent(action, key))
+                return;
+        }
+
+        public bool GameKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (action == KeyboardAction.KeyPress) {
                 switch (key) {
                     case KeyboardKey.Escape:
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
                             EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
-                        break;
-                    case KeyboardKey.Left:
-                        player.SetMoveLeft(true);
-                            break;
-                    case KeyboardKey.Right:
-                        player.SetMoveRight(true);
-                            break;
-                    case KeyboardKey.J:
-                        player.SetMoveLeft(true);
-                            break;
-                    case KeyboardKey.L:
-                        player.SetMoveRight(true);
-                            break;
-                    case KeyboardKey.P:
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
-                            EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_RIGHT", Message = "KEY_RELEASE"});
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
-                            EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_LEFT", Message = "KEY_RELEASE"});
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
-                            EventType = GameEventType.GameStateEvent, Message = "GAME_PAUSED"});
-                        StateMachine.GetStateMachine().SwitchState(GameStateType.GamePaused);
-                            break;
-                    default:
-                        break;
-                }
+                        return true;
+                    }
             }
-            else if (action == KeyboardAction.KeyRelease) {
-                switch (key) {
-                    case KeyboardKey.Left:
-                        player.SetMoveLeft(false);
-                            break;
-                    case KeyboardKey.Right:
-                        player.SetMoveRight(false);
-                            break;
-                    case KeyboardKey.J:
-                        player.SetMoveLeft(false);
-                            break;
-                    case KeyboardKey.L:
-                        player.SetMoveRight(false);
-                            break;
-                    default:
-                        break;
-                }
-            }
+            return false;     
         }
 
-        public void ProcessEvent(GameEvent gameEvent)
-        {
-
-        }
         public void RenderState() {
-            ball.Render();
-            player.Render();
-            blocks.RenderEntities();
-            showPoints.RenderText();
+            if (gameInstance != null) 
+                gameInstance.render();
         }
  
         public void ResetState() {
-            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+            StateMachine.GetStateMachine().QueueEvent(new GameEvent{
                 EventType = GameEventType.GameStateEvent, Message = "START_GAME"});
         }
-
         public void UpdateState() {
-            player.Move();
-            ball.Move();
-            collisionControler.CollisionDetector();
+            if (gameInstance != null)
+                gameInstance.update();
         }
-
-        public void AddPoints(int p) {
-            points += p;
-            showPoints.SetText(points.ToString());
-            //Console.WriteLine(points);
+        public void ProcessEvent(GameEvent gameEvent) {
+            if (gameEvent.Message == "START_GAME") {
+                if (gameInstance != null)
+                    gameInstance.Destroy();
+                gameInstance = new GameInstance();
+            }
+            if (gameEvent.Message == "GAME_OVER") {
+                StateMachine.GetStateMachine().SwitchState(GameStateType.GameOver);
+            }
         }
     }
 }

@@ -4,11 +4,11 @@ using DIKUArcade.Timers;
 using System.IO;
 using DIKUArcade.Graphics;
 using System.Collections.Generic;
-using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Utilities;
+using Breakout.LevelHandling;
 
 namespace Breakout {
     public class LevelLoader {
@@ -20,7 +20,7 @@ namespace Breakout {
             new Dictionary<string, string>();
         private Dictionary<string, string> legendDictionary =
             new Dictionary<string, string>();
-        private EntityContainer<Block> blocks = new EntityContainer<Block>();
+        private EntityContainer<Block> blocks = new EntityContainer<Block>();        
         
         // Breaks file into three subfiles
         private string[] CreateSubFile(string subFileName) {
@@ -62,12 +62,13 @@ namespace Breakout {
             }
         }
 
-        public (string[], Dictionary<string, string>, Dictionary<string, string>) GetSubfiles(string levelAsASCII) {
-                file = File.ReadAllLines(levelAsASCII);
-                CreateAllSubFiles();
-                metaToDictionary();
-                legendToDictionary();
-                return (map, metaDictionary, legendDictionary);
+        public LevelDefinition LoadDefinition(LevelEnum level) {
+            var filename = LevelToString.LevelEnumToString(level);
+            file = File.ReadAllLines(filename);
+            CreateAllSubFiles();
+            metaToDictionary();
+            legendToDictionary();
+            return new LevelDefinition(map, metaDictionary, legendDictionary);
         }
     }
 }

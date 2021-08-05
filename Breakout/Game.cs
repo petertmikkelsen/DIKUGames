@@ -18,14 +18,15 @@ namespace Breakout {
     public class Game : DIKUGame, IGameEventProcessor {
 
         public Game(WindowArgs windowArgs) : base (windowArgs) {
+            
             window.SetKeyEventHandler(HandleKeyEvent);
             //window.SetClearColor(System.Drawing.Color.AliceBlue);
 
-            BreakoutBus.GetBus().InitializeEventBus(new List <GameEventType> {GameEventType.WindowEvent, GameEventType.GameStateEvent});
+            BreakoutBus.GetBus().InitializeEventBus(new List <GameEventType> {GameEventType.WindowEvent, GameEventType.GameStateEvent, GameEventType.MovementEvent});
 
-            BreakoutBus.GetBus().Subscribe(GameEventType.WindowEvent, this);
-
+            BusBuffer.GetBuffer().Subscribe(GameEventType.WindowEvent, this);
         }
+        
         private void HandleKeyEvent(KeyboardAction action, KeyboardKey key){
             StateMachine.GetStateMachine().HandleKeyEvent(action, key);
         }
@@ -36,6 +37,7 @@ namespace Breakout {
         public override void Update() {
             StateMachine.GetStateMachine().UpdateState();
             BreakoutBus.GetBus().ProcessEvents();
+            BusBuffer.GetBuffer().update();
         }
 
         public void ProcessEvent(GameEvent gameEvent){

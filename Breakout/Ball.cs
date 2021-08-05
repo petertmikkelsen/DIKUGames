@@ -1,16 +1,15 @@
 using System;
 using DIKUArcade;
 using DIKUArcade.Entities;
+using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
-using DIKUArcade.Events;
 
 
 namespace Breakout
 {
-    public class Ball : Entity
-    {
+    public class Ball : Entity{
         private Entity entity;
         public DynamicShape shape;
         public float speed;
@@ -35,7 +34,9 @@ namespace Breakout
                 shape.Move();
             }
             else if (shape.Position.Y <= 0.0f) {
-                entity.DeleteEntity();
+                DeleteEntity();
+                StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                EventType = GameEventType.GameStateEvent, Message = "TAKE_LIFE"});
             }
             else
                 shape.Move();
@@ -48,18 +49,9 @@ namespace Breakout
             shape.Direction.X = (shape.Direction.X * (-1));
         }
         public void SetPositionPlayerHit(float x) {
-
             shape.Direction.X = x;
             float y = MathF.Sqrt(MathF.Pow(this.speed, 2.0f)-MathF.Pow(x,2.0f));
             shape.Direction.Y = y;
-
-
-            // GameEvent gameevent = new GameEvent ();
-// 
-            // gameevent.EventType = GameEventType.GameStateEvent;
-            // gameevent.Message = "GAME_OVER";
-// 
-            // BreakoutBus.GetBus.RedigisterEvent (gameevent);
         }
         
         public Vec2F GetPosition() {
@@ -67,6 +59,9 @@ namespace Breakout
         }
         public void Render() {
             entity.RenderEntity();
+        }
+        public void ResetPosition() {
+            shape.Position = Constants.BallStartPosition;
         }
     }
 }

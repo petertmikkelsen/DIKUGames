@@ -10,11 +10,9 @@ using DIKUArcade.Entities;
 using Breakout.Utilities;
 
 
-namespace Breakout
-{
-    public class HardenedBlock : Block
-    {
-        public HardenedBlock(StationaryShape shape, IBaseImage image) : base(shape, image, 2) { 
+namespace Breakout {
+    public class HardenedBlock : Block {
+        public HardenedBlock(StationaryShape shape, IBaseImage image) : base(shape, image, 2, Blocks.BlockEnum.HardenedBlock) { 
             hitPoints = 2; 
         }
 

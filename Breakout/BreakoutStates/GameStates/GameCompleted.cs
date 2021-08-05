@@ -9,10 +9,8 @@ using DIKUArcade.Math;
 using DIKUArcade.Events;
 using Breakout.Utilities;
 
-namespace BreakoutStates.GameStates
-{
-    public class GameCompleted
-    {
+namespace BreakoutStates.GameStates {
+    public class GameCompleted : IGameState{
         private Entity background;
         private Text gameCompletedText;
         public GameCompleted() {

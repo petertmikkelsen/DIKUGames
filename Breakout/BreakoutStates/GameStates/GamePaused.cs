@@ -34,12 +34,10 @@ namespace Breakout {
             if (action == KeyboardAction.KeyPress) {
                 switch (key) {
                     case KeyboardKey.Escape:
-                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
                             EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
                         break;
                     case KeyboardKey.P:
-                    //    BreakoutBus.GetBus().RegisterTimedEvent(new GameEvent {
-                    //        EventType = GameEventType.GameStateEvent, Message = "GAME_UNPAUSED"}, TimePeriod.NewSeconds(1.0));
                         StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning);
                         break;
                     case KeyboardKey.M:
@@ -53,7 +51,6 @@ namespace Breakout {
 
         public void RenderState()
         {
-
             background.RenderEntity();
             ResumeGame.RenderText();
             MainMenu.RenderText();

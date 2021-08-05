@@ -17,7 +17,9 @@ namespace Breakout
     public enum GameStateType {
         GameRunning,
         GamePaused,
-        MainMenu 
+        MainMenu,
+        GameOver,
+        GameCompleted
     }
 }
     //public class StateTransformer{

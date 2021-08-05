@@ -13,22 +13,34 @@ using DIKUArcade.Utilities;
 using Breakout.Utilities;
 using DIKUArcade.State;
 using DIKUArcade.Input;
+using BreakoutStates.GameStates;
 
 namespace Breakout {
     public class StateMachine : IGameEventProcessor, IGameState {
         private static StateMachine stateMachine;
-        public IGameState ActiveState { get; private set; }
+        public StateMachine(IGameState activeState) 
+        {
+            this.ActiveState = activeState;
+               
+        }
+                public IGameState ActiveState { get; private set; }
+        public List<GameEvent> eventQueueBuffer {private set; get;}
         private IGameState MainMenu;
         private IGameState GameRunning;
         private IGameState GamePaused;
+        private IGameState GameOver;
+        private IGameState GameCompleted;
 
         private StateMachine() {
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+            BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
             // BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
 
+            eventQueueBuffer = new List<GameEvent>();
             MainMenu = new MainMenu();
             GameRunning = new GameRunning();
             GamePaused = new GamePaused();
+            GameOver = new GameOver();
+            GameCompleted = new GameCompleted();
 
             ActiveState = MainMenu;
             stateMachine = this;
@@ -45,6 +57,12 @@ namespace Breakout {
                     break;
                 case GameStateType.GamePaused:
                     gameState = GamePaused;
+                    break;
+                case GameStateType.GameOver:
+                    gameState = GameOver;
+                    break;
+                case GameStateType.GameCompleted:
+                    gameState = GameCompleted;
                     break;
                 default:
                     break;
@@ -67,9 +85,17 @@ namespace Breakout {
                 case GameStateType.MainMenu:
                     ActiveState = MainMenu;
                         break;
+                case GameStateType.GameOver:
+                    ActiveState = GameOver;
+                        break;
+                case GameStateType.GameCompleted:
+                    ActiveState = GameCompleted;
+                        break;
                 default:
                     break;
             }
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                        EventType = GameEventType.WindowEvent, Message = "STATE_CHANGE"});
         }
 
         public void ProcessEvent(GameEvent gameEvent) {
@@ -84,21 +110,31 @@ namespace Breakout {
                     case "GAME_PASUED":
                         SwitchState(GameStateType.GamePaused);
                         break;
+                    case "GAME_OVER":
+                        SwitchState(GameStateType.GameOver);
+                        break;
+                    case "GAME_COMPLETED":
+                        SwitchState(GameStateType.GameCompleted);
+                        break;
                 }
             }
         }
-
-        public void ResetState()
-        {
+        public void QueueEvent(GameEvent gameEvent) {
+            eventQueueBuffer.Add(gameEvent);
         }
 
-        public void UpdateState()
-        {
+        public void ResetState() {
+        }
+
+        public void UpdateState() {
             ActiveState.UpdateState();
+            foreach (var events in eventQueueBuffer) {
+                BreakoutBus.GetBus().RegisterEvent(events);
+            }
+            eventQueueBuffer.Clear();
         }
 
-        public void RenderState()
-        {
+        public void RenderState() {
             ActiveState.RenderState();
         }
 

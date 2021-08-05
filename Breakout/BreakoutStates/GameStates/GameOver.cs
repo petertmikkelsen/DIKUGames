@@ -11,17 +11,20 @@ using Breakout.Utilities;
 
 namespace BreakoutStates.GameStates
 {
-    public class GameOver   {
+    public class GameOver : IGameState{
 
 
     private Entity background;
     private Text gameOverText;
+    private Text backToMenu;
 
     public GameOver() {
         background = new Entity(Constants.BackGroundShape, 
                 new Image(ImageDatabase.GetImageFilePath("shipit_titlescreen.png")));
-            gameOverText = new Text("Game Over", new Vec2F(0.2f, 0.1f), new Vec2F(0.6f, 0.6f));
-            gameOverText.SetColor(System.Drawing.Color.DarkRed);
+        gameOverText = new Text("Game Over", new Vec2F(0.2f, 0.1f), new Vec2F(0.7f, 0.6f));
+        gameOverText.SetColor(System.Drawing.Color.DarkRed);
+        backToMenu = new Text("Main Menu \n press m", new Vec2F(0.2f, 0.1f), new Vec2F(0.8f, 0.4f));
+        backToMenu.SetColor(System.Drawing.Color.DarkRed);
     }
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (action == KeyboardAction.KeyPress) {
@@ -43,6 +46,7 @@ namespace BreakoutStates.GameStates
         public void RenderState() {
             background.RenderEntity();
             gameOverText.RenderText();
+            backToMenu.RenderText();
         }
     }
 }

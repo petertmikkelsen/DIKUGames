@@ -11,5 +11,14 @@ namespace Breakout {
         public static Vec2F BackGroundPosition => new Vec2F(0.0f, 0.0f);
         public static Shape BackGroundShape => new StationaryShape(BackGroundPosition, BackGroundExtent);
 
+        public static Vec2F BallExtent => new Vec2F(0.03f, 0.03f);
+        public static Vec2F BallStartPosition => new Vec2F(0.5f - BallExtent.X / 2, 0.15f);
+        public static DynamicShape BallShape => new DynamicShape(BallStartPosition, BallExtent);
+
+        public static Vec2F PlayerExtent => new Vec2F(0.20f, 0.025f);
+        public static Vec2F PlayerStartPosition => new Vec2F(0.5f - PlayerExtent.X / 2, 0.1f);
+        public static DynamicShape PlayerShape => new DynamicShape(PlayerStartPosition, PlayerExtent);
+
+        public static Vec2F ExplosionExtent => new Vec2F(0.08f, 0.08f);
     }
 }
