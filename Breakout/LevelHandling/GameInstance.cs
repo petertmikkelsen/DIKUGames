@@ -62,6 +62,10 @@ namespace Breakout.LevelHandling
             if (level != null) 
                 level.Destroy();
             levelEnum = E;
+            if (levelEnum == LevelEnum.End) {
+                BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                    EventType = GameEventType.GameStateEvent, Message = "GAME_COMPLETED"});
+            }
             level = new Level(new LevelLoader().LoadDefinition(levelEnum));
             SetFrozen(true);
         }

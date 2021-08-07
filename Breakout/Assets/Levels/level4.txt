@@ -27,8 +27,14 @@ Map/
 
 Meta:
 Name: LEVEL 4
+Time: 360
+PowerUP: %
+Hardened: X
 Meta/
 
 Legend:
+b) orange-block.png
+%) green-block.png
+X) grey-block.png
 
 Legend/

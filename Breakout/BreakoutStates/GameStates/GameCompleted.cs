@@ -13,11 +13,14 @@ namespace BreakoutStates.GameStates {
     public class GameCompleted : IGameState{
         private Entity background;
         private Text gameCompletedText;
+        private Text backToMenu;
         public GameCompleted() {
             background = new Entity(Constants.BackGroundShape, 
                 ImageDatabase.GetInstance().GetImage("shipit_titlescreen.png"));
-            gameCompletedText = new Text("Game Completed", new Vec2F(0.1f, 0.3f), new Vec2F(0.6f, 0.3f));
+            gameCompletedText = new Text("Congratulations! \n you finished", new Vec2F(0.1f, 0.3f), new Vec2F(0.6f, 0.3f));
             gameCompletedText.SetColor(System.Drawing.Color.Azure);
+            backToMenu = new Text("Main Menu \n press m", new Vec2F(0.2f, 0.1f), new Vec2F(0.8f, 0.4f));
+            backToMenu.SetColor(System.Drawing.Color.Azure);
         }
 
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
