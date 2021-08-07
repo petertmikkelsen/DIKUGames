@@ -41,7 +41,7 @@ namespace Breakout {
             if (action == KeyboardAction.KeyPress) {
                 switch (key) {
                     case KeyboardKey.Escape:
-                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
                         return true;
                     }
@@ -55,7 +55,7 @@ namespace Breakout {
         }
  
         public void ResetState() {
-            StateMachine.GetStateMachine().QueueEvent(new GameEvent{
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                 EventType = GameEventType.GameStateEvent, Message = "START_GAME"});
         }
         public void UpdateState() {

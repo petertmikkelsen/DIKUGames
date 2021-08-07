@@ -7,10 +7,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout;
-
+using DIKUArcade.Timers;
 
 namespace Breakout {
-
     /// <summary>
     /// A game state for when the game is paused. From this state one should be
     /// able to choose between unpausin or enter the main menu state.
@@ -34,7 +33,7 @@ namespace Breakout {
             if (action == KeyboardAction.KeyPress) {
                 switch (key) {
                     case KeyboardKey.Escape:
-                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
                         break;
                     case KeyboardKey.P:

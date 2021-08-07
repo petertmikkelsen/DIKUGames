@@ -22,6 +22,11 @@ namespace Breakout {
             unsubscribeBuffer = new List<(GameEventType, IGameEventProcessor)>();
         }
 
+        internal void Subscribe(GameEventType gameStateEvent)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Subscribe(GameEventType type, IGameEventProcessor eventProcessor) {
             subscribeBuffer.Add((type, eventProcessor));
         }

@@ -11,7 +11,7 @@ namespace Breakout.Blocks {
         }
         public override void TakeDamage() {
             base.TakeDamage();
-            StateMachine.GetStateMachine().QueueEvent(new GameEvent{
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                 EventType = GameEventType.MovementEvent, ObjectArg1 = Shape.Position, Message = "EXPLOSION"});
         }
     }

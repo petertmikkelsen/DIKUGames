@@ -3,6 +3,7 @@ namespace Breakout.Blocks {
         NormalBlock,
         HardenedBlock,
         UnbreakableBlock,
-        ExplosiveBlock
+        ExplosiveBlock,
+        PowerUpBlock
     }
 }

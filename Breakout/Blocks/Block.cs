@@ -24,10 +24,10 @@ namespace Breakout
             hitPoints -= 1;
             if (hitPoints <= 0) {
                 this.DeleteEntity();
-                var game = StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning) as GameRunning;
-                StateMachine.GetStateMachine().QueueEvent(new GameEvent{
+                var game = StateMachine.GetStateMachine().GameRunning as GameRunning;
+                BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                     EventType = GameEventType.GameStateEvent, IntArg1 = pointValue, Message = "ADD_POINTS"});
-                StateMachine.GetStateMachine().QueueEvent(new GameEvent{
+                BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                    EventType = GameEventType.GameStateEvent, Message = "BLOCK_DESTROYED"});
             } 
         }

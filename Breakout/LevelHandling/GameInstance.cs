@@ -13,42 +13,41 @@ using System.Diagnostics;
 namespace Breakout.LevelHandling
 {
     public class GameInstance : IGameEventProcessor{
-        public Ball ball {private set; get;}
-        public Player player {private set; get;}
+
         private Text showPoints;
         private int points = 0;
         private PlayerLives playerLives;
         private bool frozen;
         private Stopwatch freezeTimer;
+        
 
         private Level level;
         public LevelEnum levelEnum;
 
-        public CollisionControler collisionControler {private set; get;}
+        
         private ExplosionContainer explosionContainer;
         
 
         public GameInstance() {
-            player = new Player(
-                new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)), new Image(ImageDatabase.GetImageFilePath("Player.png")));
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
-                new Image(ImageDatabase.GetImageFilePath("ball.png")));
-            showPoints = new Text(points.ToString(), new Vec2F(0.90f, 0.70f), new Vec2F(0.3f, 0.3f));
-            showPoints.SetColor(System.Drawing.Color.BlanchedAlmond); 
+            
+            showPoints = new Text(points.ToString(), new Vec2F(0.90f, 0.685f), new Vec2F(0.3f, 0.3f));
+            showPoints.SetColor(System.Drawing.Color.Black); 
             showPoints.SetFontSize(60);
+
             playerLives = new PlayerLives();
             freezeTimer = new Stopwatch();
-
-            collisionControler = new CollisionControler (ball, player);
+            
             explosionContainer = new ExplosionContainer();
             
             GoToLevel(LevelEnum.Level_1);
 
             BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
+
+            
         }
         public bool GameKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (freezeTimer.ElapsedMilliseconds > 50) {
-                if (player.GameKeyEvent(action, key)) {
+                if (level.GameKeyEvent(action, key)) {
                     SetFrozen(false);
                     return true;
                 }
@@ -57,7 +56,6 @@ namespace Breakout.LevelHandling
         }
         public void Destroy() {
             BusBuffer.GetBuffer().Unsubscribe(GameEventType.GameStateEvent, this);
-            player.Destroy();
             level.Destroy();
         }
         public void GoToLevel(LevelEnum E) {
@@ -65,9 +63,6 @@ namespace Breakout.LevelHandling
                 level.Destroy();
             levelEnum = E;
             level = new Level(new LevelLoader().LoadDefinition(levelEnum));
-            collisionControler.level = level;
-            ball.ResetPosition();
-            player.ResetPosition();
             SetFrozen(true);
         }
         public void AddPoints(int p) {
@@ -88,8 +83,6 @@ namespace Breakout.LevelHandling
         }
 
         public void render() {
-            ball.RenderEntity();
-            player.RenderEntity();
             showPoints.RenderText();
             level.render();
             explosionContainer.RenderAnimations();
@@ -97,11 +90,11 @@ namespace Breakout.LevelHandling
         }
         public void update() {
             if (frozen == false) {
-                player.Move();
-                ball.Move();
-                collisionControler.CollisionDetector();
+                
+                level.update();
             }
             playerLives.update();
+            
         }
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.Message == "ADD_POINTS")
@@ -114,14 +107,20 @@ namespace Breakout.LevelHandling
                 else {}
             }
             if (gameEvent.Message == "TAKE_LIFE") {
-                player.ResetPosition();
-                ball.ResetPosition();
+                level.player.ResetPosition();
+                level.ball.ResetPosition();
                 SetFrozen(true);
             }
             if (gameEvent.Message == "STATE_CHANGE") {
-                if ()
+                SetFrozen(!StateMachine.GetStateMachine().IsGameState(GameStateType.GameRunning));
             }
-                
+            if (gameEvent.Message == "EXTRA_LIFE") {
+                BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                    EventType = GameEventType.GameStateEvent, Message = "GIVE_LIFE"});
+            }
+            if (gameEvent.Message == "EXTRA_POINTS") {
+                AddPoints(10);
+            }
         }
     }
 }

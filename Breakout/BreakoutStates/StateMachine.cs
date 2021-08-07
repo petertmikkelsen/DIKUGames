@@ -23,13 +23,13 @@ namespace Breakout {
             this.ActiveState = activeState;
                
         }
-                public IGameState ActiveState { get; private set; }
+        public IGameState ActiveState { get; private set; }
         public List<GameEvent> eventQueueBuffer {private set; get;}
-        private IGameState MainMenu;
-        private IGameState GameRunning;
-        private IGameState GamePaused;
-        private IGameState GameOver;
-        private IGameState GameCompleted;
+        public IGameState MainMenu {private set; get;}
+        public IGameState GameRunning {private set; get;}
+        public IGameState GamePaused {private set; get;}
+        public IGameState GameOver {private set; get;}
+        public  IGameState GameCompleted {private set; get;}
 
         private StateMachine() {
             BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
@@ -45,29 +45,45 @@ namespace Breakout {
             ActiveState = MainMenu;
             stateMachine = this;
         }
-
-        public IGameState GetGameState(GameStateType gameStateType) {
-            IGameState gameState = null;
+        //
+        //public IGameState GetGameState(GameStateType gameStateType) {
+        //    IGameState gameState = null;
+        //    switch (gameStateType) {
+        //        case GameStateType.MainMenu:
+        //            gameState = MainMenu;
+        //            break;
+        //        case GameStateType.GameRunning:
+        //            gameState = GameRunning;
+        //            break;
+        //        case GameStateType.GamePaused:
+        //            gameState = GamePaused;
+        //            break;
+        //        case GameStateType.GameOver:
+        //            gameState = GameOver;
+        //            break;
+        //        case GameStateType.GameCompleted:
+        //            gameState = GameCompleted;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    return gameState;
+        //}
+        public bool IsGameState(GameStateType gameStateType) {
             switch (gameStateType) {
                 case GameStateType.MainMenu:
-                    gameState = MainMenu;
-                    break;
+                    return ActiveState == MainMenu;
                 case GameStateType.GameRunning:
-                    gameState = GameRunning;
-                    break;
+                    return ActiveState == GameRunning;
                 case GameStateType.GamePaused:
-                    gameState = GamePaused;
-                    break;
+                    return ActiveState == GamePaused;
                 case GameStateType.GameOver:
-                    gameState = GameOver;
-                    break;
+                    return ActiveState == GameOver;
                 case GameStateType.GameCompleted:
-                    gameState = GameCompleted;
-                    break;
+                    return ActiveState == GameCompleted;
                 default:
-                    break;
+                    return false;
             }
-            return gameState;
         }
 
         public static StateMachine GetStateMachine() {
@@ -95,7 +111,7 @@ namespace Breakout {
                     break;
             }
             BreakoutBus.GetBus().RegisterEvent(new GameEvent{
-                        EventType = GameEventType.WindowEvent, Message = "STATE_CHANGE"});
+                EventType = GameEventType.GameStateEvent, Message = "STATE_CHANGE"});
         }
 
         public void ProcessEvent(GameEvent gameEvent) {
@@ -119,19 +135,12 @@ namespace Breakout {
                 }
             }
         }
-        public void QueueEvent(GameEvent gameEvent) {
-            eventQueueBuffer.Add(gameEvent);
-        }
 
         public void ResetState() {
         }
 
         public void UpdateState() {
             ActiveState.UpdateState();
-            foreach (var events in eventQueueBuffer) {
-                BreakoutBus.GetBus().RegisterEvent(events);
-            }
-            eventQueueBuffer.Clear();
         }
 
         public void RenderState() {

@@ -12,6 +12,7 @@ namespace Breakout {
         public static Shape BackGroundShape => new StationaryShape(BackGroundPosition, BackGroundExtent);
 
         public static Vec2F BallExtent => new Vec2F(0.03f, 0.03f);
+        public const float BallVelocity = 0.015f;
         public static Vec2F BallStartPosition => new Vec2F(0.5f - BallExtent.X / 2, 0.15f);
         public static DynamicShape BallShape => new DynamicShape(BallStartPosition, BallExtent);
 

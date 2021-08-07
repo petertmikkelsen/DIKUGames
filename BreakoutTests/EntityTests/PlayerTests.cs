@@ -16,13 +16,13 @@ namespace BreakoutTests
 {
     public class PlayerTests
     {
-        public Player player;
+        public PlayerBar player;
 
         [SetUp]
         public void SetUp() {
             System.IO.Directory.SetCurrentDirectory("C:/Users/Peter/Documents/C#/EksamenProjekt/DIKUGames/Breakout");
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            player = new Player(
+            player = new PlayerBar(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.17f, 0.0225f)), null);
         }
 

@@ -20,7 +20,9 @@ namespace Breakout {
         public Game(WindowArgs windowArgs) : base (windowArgs) {
             
             window.SetKeyEventHandler(HandleKeyEvent);
-            //window.SetClearColor(System.Drawing.Color.AliceBlue);
+            window.SetClearColor(System.Drawing.Color.SkyBlue);
+            
+            ImageDatabase.GetInstance().initialize();
 
             BreakoutBus.GetBus().InitializeEventBus(new List <GameEventType> {GameEventType.WindowEvent, GameEventType.GameStateEvent, GameEventType.MovementEvent});
 
@@ -39,7 +41,6 @@ namespace Breakout {
             BreakoutBus.GetBus().ProcessEvents();
             BusBuffer.GetBuffer().update();
         }
-
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.Message == "CLOSE_WINDOW")
                 window.CloseWindow();

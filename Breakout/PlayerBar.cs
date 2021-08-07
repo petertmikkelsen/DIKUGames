@@ -11,14 +11,15 @@ using DIKUArcade.Input;
 
 namespace Breakout
 {
-    public class Player : Entity, IGameEventProcessor
+    public class PlayerBar : Entity, IGameEventProcessor
     {
         public Entity entity;
         public DynamicShape shape;
         private float moveLeft = 0.0f;
         private float moveRight = 0.0f;
         private const float movementSpeed = 0.01f;
-        public Player(DynamicShape shape, IBaseImage image) : base(shape, image)
+        private int invisCounter;
+        public PlayerBar(DynamicShape shape, IBaseImage image) : base(shape, image)
         {
             entity = new Entity(shape, image);
             this.shape = shape;
@@ -91,11 +92,11 @@ namespace Breakout
                         SetMoveRight(true);
                         return true;
                     case KeyboardKey.P:
-                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_RIGHT", Message = "KEY_RELEASE"});
-                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.GameStateEvent, StringArg1 = "KEY_LEFT", Message = "KEY_RELEASE"});
-                        StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+                        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                             EventType = GameEventType.GameStateEvent, Message = "GAME_PAUSED"});
                         StateMachine.GetStateMachine().SwitchState(GameStateType.GamePaused);
                         return true;
@@ -135,6 +136,16 @@ namespace Breakout
         }
 
         public void ProcessEvent(GameEvent gameEvent) {
+            if (gameEvent.Message == "INVISIBLE_PLAYER") {
+                if (invisCounter != 0) {
+                    isVisible = false;
+                }
+                invisCounter++;
+            }
+            if (gameEvent.Message == "VISIBLE_PLAYER") {
+                isVisible = true;
+                invisCounter--;
+            }
         }
     }
 }

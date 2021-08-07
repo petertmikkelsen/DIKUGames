@@ -20,7 +20,7 @@ namespace BreakoutStates.GameStates
 
     public GameOver() {
         background = new Entity(Constants.BackGroundShape, 
-                new Image(ImageDatabase.GetImageFilePath("shipit_titlescreen.png")));
+                ImageDatabase.GetInstance().GetImage("shipit_titlescreen.png"));
         gameOverText = new Text("Game Over", new Vec2F(0.2f, 0.1f), new Vec2F(0.7f, 0.6f));
         gameOverText.SetColor(System.Drawing.Color.DarkRed);
         backToMenu = new Text("Main Menu \n press m", new Vec2F(0.2f, 0.1f), new Vec2F(0.8f, 0.4f));

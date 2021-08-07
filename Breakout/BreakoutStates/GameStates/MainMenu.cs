@@ -21,7 +21,7 @@ namespace Breakout {
 
         public MainMenu() {
             background = new Entity(Constants.BackGroundShape, 
-                new Image(Path.Combine(ImageDatabase.GetImageFilePath("BreakoutTitleScreen.png"))));
+                ImageDatabase.GetInstance().GetImage("BreakoutTitleScreen.png"));
             
             startGame = new Text("Press Space \nto start", new Vec2F(0.35f, 0.4f), new Vec2F(0.3f, 0.3f));
             startGame.SetColor(255, 255, 255, 255); 
@@ -33,10 +33,10 @@ namespace Breakout {
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             if (action == KeyboardAction.KeyPress) {
                 if (key == KeyboardKey.Space) {
-                    StateMachine.GetStateMachine().GetGameState(GameStateType.GameRunning).ResetState();
+                    StateMachine.GetStateMachine().GameRunning.ResetState();
                     StateMachine.GetStateMachine().SwitchState(GameStateType.GameRunning); 
                 } else if (key == KeyboardKey.Escape) {
-                    StateMachine.GetStateMachine().QueueEvent(new GameEvent{
+                    BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                         EventType = GameEventType.WindowEvent, Message = "CLOSE_WINDOW"});
                 }
             }

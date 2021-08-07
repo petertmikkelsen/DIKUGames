@@ -18,20 +18,20 @@ namespace Breakout {
             BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
             numbOfLives = maxNumbOfLives;
             lives = new EntityContainer(maxNumbOfLives);
-            heartFilled = new Image(ImageDatabase.GetImageFilePath("heart_filled.png"));
-            heartEmpty = new Image(ImageDatabase.GetImageFilePath("heart_empty.png"));
+            heartFilled = ImageDatabase.GetInstance().GetImage("heart_filled.png");
+            heartEmpty = ImageDatabase.GetInstance().GetImage("heart_empty.png");
             for (int i = 1; i <= maxNumbOfLives; i++) {
-                lives.AddStationaryEntity(new StationaryShape(new Vec2F(0.22f - 0.04f * i, 0.94f), new Vec2F(0.04f, 0.04f)), heartFilled);
+                lives.AddStationaryEntity(new StationaryShape(new Vec2F(0.18f - 0.04f * i, 0.94f), new Vec2F(0.04f, 0.04f)), heartFilled);
             }
         }
         public void update() {
             var n = 0;
             foreach(Entity life in lives) {
                 if (n < numbOfLives) {
-                    life.Image = new Image(ImageDatabase.GetImageFilePath("heart_filled.png"));
+                    life.Image = ImageDatabase.GetInstance().GetImage("heart_filled.png");
                 }
                 else {
-                    life.Image = new Image(ImageDatabase.GetImageFilePath("heart_empty.png"));
+                    life.Image = ImageDatabase.GetInstance().GetImage("heart_empty.png");
                 }
                 n++;
             }
@@ -50,7 +50,7 @@ namespace Breakout {
                 LoseGame();
         }
         public void LoseGame() {
-            StateMachine.GetStateMachine().QueueEvent(new GameEvent {
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent {
                 EventType = GameEventType.GameStateEvent, Message = "GAME_OVER"});
         }
         public void ResetLives() {

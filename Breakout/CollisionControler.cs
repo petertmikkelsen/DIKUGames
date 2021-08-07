@@ -19,37 +19,48 @@ namespace Breakout
 
         public Level level;
         public Ball ball;
-        public Player player;
+        public PlayerBar player;
 
-        public CollisionControler(Ball ball, Player player) {
+        public CollisionControler(Ball ball, PlayerBar player, Level level) {
             this.ball = ball;
-            this.player = player; 
+            this.player = player;
+            this.level = level;
         }
         public void CollisionDetector() {
-
+            double closest = 9999;
+            Block closestBlock = null;
+            CollisionDirection chosenDirection = CollisionDirection.CollisionDirUnchecked;
             level.blocks.Iterate(Block => {
                 //Collosion if ball hits above or below
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirDown ||
-                        CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirUp) {
-                    Block.TakeDamage();
+                var info = CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape);
+                if (info.Collision && (chosenDirection == CollisionDirection.CollisionDirUnchecked || info.DirectionFactor.Length() < closest)) {
+                    closest = info.DirectionFactor.Length();
+                    closestBlock = Block;
+                    chosenDirection = info.CollisionDir;
+                }});
+            //
+            if (chosenDirection != CollisionDirection.CollisionDirUnchecked) {
+                closestBlock.TakeDamage();
+                if (chosenDirection == CollisionDirection.CollisionDirDown || chosenDirection == CollisionDirection.CollisionDirUp) {
                     ball.SetPositionBlockHitUnderOrAbove();
                 }
-                //Collosion if ball hits the side
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirRight ||
-                        CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirLeft) {
-                    Block.TakeDamage();
+                else {
                     ball.SetPositionBlockHitSide();
                 }
-                //Collision if the ball hits the player
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
-                    float playerPosMid = player.shape.Position.X+player.shape.Extent.X/2.0f;
-                    float x = (ball.shape.Position.X-playerPosMid)*0.07f;
+            }
+            //Collision if the ball hits the player
+            if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
+                float playerPosMid = player.shape.Position.X+player.shape.Extent.X/2.0f;
+                float x = (ball.shape.Position.X-playerPosMid)*0.07f;
                     
-                    ball.SetPositionPlayerHit(x);
+                ball.SetPositionPlayerHit(x);
+            }
+            level.powerUps.Iterate(PowerUp => {
+                if (CollisionDetection.Aabb(PowerUp.Shape.AsDynamicShape(), player.shape).Collision) {
+                    PowerUp.DeleteEntity();
+                    PowerUp.ActivatePowerUp();
                 }
-            });
-                
+            });   
         } 
-        
     }
 }

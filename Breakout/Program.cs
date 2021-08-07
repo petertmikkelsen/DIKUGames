@@ -4,12 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Breakout
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
+namespace Breakout {
+    class Program {
+        static void Main(string[] args) {
             
             var windowArgs = new WindowArgs();
             windowArgs.Title = "Breakout";

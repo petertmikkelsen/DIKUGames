@@ -20,7 +20,7 @@ namespace Breakout {
         {
             base.TakeDamage();
             if (hitPoints == 1) {
-                Image = new Image(ImageDatabase.GetImageFilePath("Darkgreen-block-damaged.png"));
+                Image = ImageDatabase.GetInstance().GetImage("Darkgreen-block-damaged.png");
             } 
         }
     }
