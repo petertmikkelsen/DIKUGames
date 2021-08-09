@@ -13,16 +13,12 @@ namespace Breakout
 {
     public class PlayerBar : Entity, IGameEventProcessor
     {
-        public Entity entity;
-        public DynamicShape shape;
         private float moveLeft = 0.0f;
         private float moveRight = 0.0f;
         private const float movementSpeed = 0.01f;
         private int invisCounter;
-        public PlayerBar(DynamicShape shape, IBaseImage image) : base(shape, image)
-        {
-            entity = new Entity(shape, image);
-            this.shape = shape;
+        public PlayerBar(DynamicShape xShape, IBaseImage image) : base(xShape, image) {
+            Shape = Shape.AsDynamicShape();
             BusBuffer.GetBuffer().Subscribe(GameEventType.GameStateEvent, this);
         }
         public void Destroy() {
@@ -30,24 +26,24 @@ namespace Breakout
         }
         public void Render()
         {
-            entity.RenderEntity();
+            RenderEntity();
         }
         public void Move()
         {
-            if (shape.Position.X >= 0.82f)
+            if (Shape.Position.X >= 0.82f)
             {
                 SetMoveRight(false);
-                shape.Position.X = 0.82f;
-                shape.Move();
+                Shape.Position.X = 0.82f;
+                Shape.Move();
             }
-            else if (shape.Position.X < 0.01f)
+            else if (Shape.Position.X < 0.01f)
             {
                 SetMoveLeft(false);
-                shape.Position.X = 0.01f;
-                shape.Move();
+                Shape.Position.X = 0.01f;
+                Shape.Move();
             }
             else
-                shape.Move();
+                Shape.Move();
         }
         public void SetMoveLeft(bool val)
         {
@@ -127,12 +123,14 @@ namespace Breakout
 
         private void UpdateDirection()
         {
-            shape.Direction.X = moveLeft + moveRight;
+            GetShape().Direction.X = moveLeft + moveRight;
         }
-
+        public DynamicShape GetShape() {
+            return Shape.AsDynamicShape();
+        }
         public void ResetPosition()
         {
-            shape.Position = Constants.PlayerStartPosition;
+            Shape.Position = Constants.PlayerStartPosition;
         }
 
         public void ProcessEvent(GameEvent gameEvent) {

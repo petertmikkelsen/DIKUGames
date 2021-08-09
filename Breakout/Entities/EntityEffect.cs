@@ -1,8 +1,8 @@
 using DIKUArcade.Entities;
 
-namespace Breakout {
+namespace Breakout.Entities {
     public abstract class EntityEffect {
-        public abstract bool update(Entity entity);
+        public abstract void Update(Entity entity);
         
     }
 }

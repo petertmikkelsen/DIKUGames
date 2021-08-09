@@ -112,7 +112,6 @@ namespace Breakout.LevelHandling
             }
             if (gameEvent.Message == "TAKE_LIFE") {
                 level.player.ResetPosition();
-                level.ball.ResetPosition();
                 SetFrozen(true);
             }
             if (gameEvent.Message == "STATE_CHANGE") {

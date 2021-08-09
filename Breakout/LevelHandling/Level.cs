@@ -9,12 +9,13 @@ using Breakout.Blocks;
 using DIKUArcade.Events;
 using DIKUArcade.Timers;
 using DIKUArcade.Input;
+using Breakout.Entities;
 
 namespace Breakout.LevelHandling {
     public class Level : IGameEventProcessor {
         public EntityContainer<Block> blocks { private set; get; }
         public EntityContainer<PowerUp> powerUps { private set; get; }
-        public Ball ball {private set; get;}
+        public IBall ball {private set; get;}
         public PlayerBar player {private set; get;}
         public CollisionControler collisionControler {private set; get;}
         private Random random;
@@ -22,6 +23,7 @@ namespace Breakout.LevelHandling {
         public long startTime;
         public long levelTime;
         public Text timeLeft;
+
         public Level(LevelDefinition levelDefinition) {
             blocks = new EntityContainer<Block>();
             powerUps = new EntityContainer<PowerUp>();
@@ -37,8 +39,8 @@ namespace Breakout.LevelHandling {
             player = new PlayerBar(
                 new DynamicShape(new Vec2F(0.41f, 0.1f), new Vec2F(0.18f, 0.0225f)),
                 ImageDatabase.GetInstance().GetImage("Player.png"));
+            collisionControler = new CollisionControler (player, this);
             SpawnDefaultBall();
-            collisionControler = new CollisionControler (ball, player, this);
 
             levelTime = 1000 * long.Parse(levelDefinition.metaDictionary["Time"]);
             timeLeft = new Text("Time: "+(levelTime/1000).ToString(), new Vec2F(0.4f, 0.685f), new Vec2F(0.3f, 0.3f));
@@ -70,11 +72,14 @@ namespace Breakout.LevelHandling {
             }
         }
         public void SpawnDefaultBall() {
-            ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
+            var ball = new Ball(new DynamicShape(new Vec2F(0.485f, 0.1225f), new Vec2F(0.03f, 0.03f), new Vec2F(0.006f, 0.009f)*1.5f), 
                 ImageDatabase.GetInstance().GetImage("ball.png"));
-            if (collisionControler != null) {
-                collisionControler.ball = ball;
-            }
+            this.ball = ball;
+            int startAccel = 10000;
+            int accelDuration = 10000;
+            BreakoutBus.GetBus().RegisterTimedEvent(new GameEvent {
+                EventType = GameEventType.GameStateEvent, ObjectArg1 = ball, IntArg1 = accelDuration, Message = "START_ACCELERATING"}, DIKUArcade.Timers.TimePeriod.NewMilliseconds(startAccel));
+            
         }
         public void Start() {
             if (hasStarted == false) {
@@ -100,13 +105,14 @@ namespace Breakout.LevelHandling {
         public void render() {
             blocks.RenderEntities();
             timeLeft.RenderText();
-            ball.RenderEntity();
+            ball.Render();
             player.RenderEntity();
             powerUps.RenderEntities();
         }
         public void update() {
             player.Move();
             ball.Update();
+            ball.Move(ball.Speed());
             collisionControler.CollisionDetector();
             foreach (PowerUp powerUp in powerUps) {
                 powerUp.Move();
@@ -126,10 +132,22 @@ namespace Breakout.LevelHandling {
                 var rnd = (PowerUpEnum)random.Next(0,(int)PowerUpEnum.POWER_UP_ENUM_END);
                 powerUps.AddEntity(PowerUpController.CreatePowerUp(gameEvent.ObjectArg1 as Vec2F, rnd));
             }
+            if (gameEvent.Message == "START_ACCELERATING") {
+                if (gameEvent.ObjectArg1 == ball) {
+                    ball = new AcceleratingBall(ball, gameEvent.IntArg1);
+                
+                    BreakoutBus.GetBus().RegisterTimedEvent(new GameEvent {
+                        EventType = GameEventType.GameStateEvent, ObjectArg1 = ball, Message = "STOP_ACCELERATING"}, DIKUArcade.Timers.TimePeriod.NewMilliseconds(gameEvent.IntArg1));
+                }
+            }
+            if (gameEvent.Message == "STOP_ACCELERATING") {
+                if (gameEvent.ObjectArg1 == ball) {
+                    ball = (ball as AcceleratingBall).next;
+                }
+            }
             if (gameEvent.Message == "BALL_DEAD") {
                 if (ball != null) {
                     ball.Destroy();
-                    ball.DeleteEntity();
                 }
                 SpawnDefaultBall();
                 BreakoutBus.GetBus().RegisterEvent(new GameEvent {
