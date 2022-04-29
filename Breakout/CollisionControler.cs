@@ -7,50 +7,59 @@ using System.Collections.Generic;
 using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Entities;
+using Breakout.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Input;
 using DIKUArcade.Physics;
+using Breakout.LevelHandling;
 
 namespace Breakout
 {
     public class CollisionControler
     {
 
-        public EntityContainer<Block> blocks;
-        public Ball ball;
-        public Player player;
+        public Level level;
+        public PlayerBar player;
 
-        public CollisionControler(EntityContainer<Block> blocks, Ball ball, Player player) {
-            this.blocks = blocks;
-            this.ball = ball;
-            this.player = player; 
-
+        public CollisionControler(PlayerBar player, Level level) {
+            this.player = player;
+            this.level = level;
         }
         public void CollisionDetector() {
-
-            blocks.Iterate(Block => {
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirDown ||
-                        CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirUp) {
-                    Block.TakeDamage();
-                    ball.SetPositionBlockHitUnderOrAbove();
+            double closest = 9999;
+            Block closestBlock = null;
+            CollisionDirection chosenDirection = CollisionDirection.CollisionDirUnchecked;
+            level.blocks.Iterate(Block => {
+                //Collosion if ball hits above or below
+                var info = CollisionDetection.Aabb(level.ball.GetShape().AsDynamicShape(), Block.Shape);
+                if (info.Collision && (chosenDirection == CollisionDirection.CollisionDirUnchecked || info.DirectionFactor.Length() < closest)) {
+                    closest = info.DirectionFactor.Length();
+                    closestBlock = Block;
+                    chosenDirection = info.CollisionDir;
+                }});
+            //
+            if (chosenDirection != CollisionDirection.CollisionDirUnchecked) {
+                closestBlock.TakeDamage();
+                if (chosenDirection == CollisionDirection.CollisionDirDown || chosenDirection == CollisionDirection.CollisionDirUp) {
+                    level.ball.SetPositionBlockHitUnderOrAbove();
                 }
-
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirRight ||
-                        CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), Block.Shape).CollisionDir == CollisionDirection.CollisionDirLeft) {
-                    Block.TakeDamage();
-                    ball.SetPositionBlockHitSide();
-
+                else {
+                    level.ball.SetPositionBlockHitSide();
+                }
+            }
+            //Collision if the ball hits the player
+            if (CollisionDetection.Aabb(level.ball.GetShape().AsDynamicShape(), player.Shape).Collision) {
+                float playerPosMid = player.Shape.Position.X+player.Shape.Extent.X/2.0f;
+                float x = (level.ball.GetShape().Position.X-playerPosMid)*0.07f;
                     
+                level.ball.SetPositionPlayerHit(x,level.ball.Speed());
+            }
+            level.powerUps.Iterate(PowerUp => {
+                if (CollisionDetection.Aabb(PowerUp.Shape.AsDynamicShape(), player.Shape).Collision) {
+                    PowerUp.DeleteEntity();
+                    PowerUp.ActivatePowerUp();
                 }
-                if (CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.shape).Collision) {
-                    float playerPosMid = player.shape.Position.X+player.shape.Extent.X/2.0f;
-                    float x = (ball.shape.Position.X-playerPosMid)*0.07f;
-                    
-                    ball.SetPositionPlayerHit(x);
-                }
-            });
-                
+            });   
         } 
-        
     }
 }

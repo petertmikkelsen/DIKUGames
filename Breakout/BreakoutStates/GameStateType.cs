@@ -15,9 +15,11 @@ using Breakout.Utilities;
 namespace Breakout
 {
     public enum GameStateType {
-        GameIsRunning,
-        GameIsPaused,
-        MainMenu 
+        GameRunning,
+        GamePaused,
+        MainMenu,
+        GameOver,
+        GameCompleted
     }
 }
     //public class StateTransformer{

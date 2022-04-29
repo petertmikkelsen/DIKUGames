@@ -27,14 +27,18 @@ namespace Breakout.Utilities
             initialize();
         }
 
-        public static string GetImageFilePath(string filename) {
-            string base_path = FileIO.GetProjectPath();
-            string path = Path.Combine(base_path, "Assets", "Images", filename);
+        private static string GetImageFilePath(string filename) {
+            //string base_path = FileIO.GetProjectPath();
+            string path = Path.Combine(/*base_path,*/ "Assets", "Images", filename);
             return path;
         }
 
         public void initialize() {
-
+            GetImage("BigPowerUp.png");
+            GetImage("DoubleSpeedPowerUp.png");
+            GetImage("LifePickUp.png");
+            GetImage("PointImage.png");
+            GetImage("HalfSpeedPowerUp.png");
         }
 
         public IBaseImage GetImage(string imageFile) {
