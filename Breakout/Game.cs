@@ -92,6 +92,7 @@ namespace Breakout {
             player.Move();
             ball.Move();
             collisionControler.CollisionDetector();
+            BreakoutBus.GetBus().ProcessEvents();
         }
 
         public void ProcessEvent(GameEvent gameEvent)
